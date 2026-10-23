@@ -1,0 +1,6 @@
+# Configuración local de pruebas (no va al sitio)
+.claude/
+# Archivos del sistema
+Thumbs.db
+desktop.ini
+.DS_Store
