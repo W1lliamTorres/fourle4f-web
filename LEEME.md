@@ -118,6 +118,11 @@ Sube **solo** estas carpetas y archivos: `index.html`, `css/`, `js/` e `img/`.
 3. Sube `index.html` y las carpetas `css`, `js` e `img`. Puedes subirlas en un .zip y usar "Extraer".
 4. Si el dominio es de Hostinger, ya queda conectado. Activa el SSL gratis en **Seguridad → SSL**.
 
+### Cómo se actualiza hoy (GitHub → Hostinger)
+El sitio en fourle4f.com se actualiza solo desde GitHub: cada vez que se suben cambios a la rama `main` del repositorio `W1lliamTorres/fourle4f-web` (con `git push`), Hostinger los publica en uno o dos minutos.
+
+**Importante al cambiar estilos o código:** Hostinger les dice a los navegadores que guarden `css/` y `js/` por 7 días. Para que todos vean la versión nueva, en `index.html` sube el número `?v=` de las tres líneas que cargan `estilos.css`, `config.js` y `app.js` (por ejemplo de `?v=2` a `?v=3`). Si solo cambias datos en `js/config.js`, también súbelo.
+
 ### Después de subirlo (importante)
 1. En `index.html`, cambia `https://fourle4f.com` por tu dominio real en las líneas `og:url` y `og:image`. Sin esto, la imagen no aparece al compartir el link.
 2. Pega tu link en [developers.facebook.com/tools/debug](https://developers.facebook.com/tools/debug/) y dale a **Volver a extraer**. Así WhatsApp e Instagram actualizan la vista previa.
