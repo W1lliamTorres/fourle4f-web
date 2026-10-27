@@ -52,6 +52,43 @@ if (CONFIG.hero && CONFIG.hero.foto){
   hv.innerHTML = `<img src="img/logo-trebol.png" alt="" width="205" height="205">`;
 }
 
+/* ---------- Conoce FOURLE4F: fotos o ilustraciones mientras llegan las fotos ---------- */
+const ILUSTRACION = {
+  // Gancho con camiseta oversized
+  outfit: `<svg viewBox="0 0 240 300"><path class="oro" d="M120 26a11 11 0 1 1 11 11c-6 0-11 4-11 9v8"/><path class="oro" d="M120 54 44 92h152Z"/>
+    <path d="M86 92 52 108 30 152l28 12 12-20v122h100V144l12 20 28-12-22-44-34-16c-8 12-20 18-34 18s-26-6-34-18Z"/><path d="M98 92c6 10 14 14 22 14s16-4 22-14" class="fino"/></svg>`,
+  // Camisetas dobladas apiladas
+  dobladas: `<svg viewBox="28 66 184 130"><path d="M40 150h160v34H40Z"/><path d="M48 116h144v34H48Z"/><path d="M56 82h128v34H56Z"/>
+    <path class="oro" d="M100 82c4 8 12 12 20 12s16-4 20-12"/><path class="fino" d="M40 167h160M48 133h144"/></svg>`,
+  // Textura de tela con una costura dorada
+  tela: `<svg viewBox="0 0 240 240"><path class="oro punteada" d="M24 160c40-30 70 20 110-6s60-50 82-40"/><path class="fino" d="M24 172c40-30 70 20 110-6s60-50 82-40"/></svg>`,
+  // Dos camisetas superpuestas: combinar prendas
+  mision: `<svg viewBox="0 0 300 220"><path d="M70 44 44 56 26 88l20 9 9-14v104h74V83l9 14 20-9-18-32-26-12c-6 9-15 13-25 13s-19-4-25-13Z"/>
+    <path class="oro" d="M170 34l-28 13-19 34 21 9 10-15v112h78V75l10 15 21-9-19-34-28-13c-6 10-16 14-26 14s-20-4-26-14Z"/></svg>`
+};
+const fotosConoce = (CONFIG.conoce && CONFIG.conoce.fotos) || {};
+$$("[data-foto-conoce]").forEach(fig => {
+  const clave = fig.dataset.fotoConoce, f = fotosConoce[clave] || {};
+  if (f.foto){
+    fig.classList.add("con-foto");
+    fig.innerHTML = `<img src="${esc(f.foto)}" alt="${esc(f.alt || "")}" loading="lazy">`;
+  } else {
+    fig.classList.add("ilustrada", "il-" + clave);
+    fig.setAttribute("aria-hidden", "true");
+    fig.innerHTML = ILUSTRACION[clave] || "";
+  }
+});
+
+/* Aparición suave al bajar por la página (no se activa si la persona pidió menos movimiento) */
+const aparecen = $$(".aparece");
+if ("IntersectionObserver" in window && !matchMedia("(prefers-reduced-motion: reduce)").matches){
+  document.documentElement.classList.add("con-aparicion");
+  const obs = new IntersectionObserver(es => es.forEach(e => {
+    if (e.isIntersecting){ e.target.classList.add("visible"); obs.unobserve(e.target); }
+  }), { rootMargin: "0px 0px -8% 0px" });
+  aparecen.forEach(el => obs.observe(el));
+}
+
 /* ---------- Menú en celular ---------- */
 const menu = $("#menu"), btnMenu = $("#btnMenu");
 function cerrarMenu(){ menu.classList.remove("abierto"); btnMenu.setAttribute("aria-expanded","false"); btnMenu.setAttribute("aria-label","Abrir menú"); }

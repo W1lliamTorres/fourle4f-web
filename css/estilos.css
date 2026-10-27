@@ -89,7 +89,10 @@ nav.menu.abierto a{padding:14px 0;border-bottom:1px solid var(--linea)}
 @media(min-width:900px){.hero .wrap{grid-template-columns:1.15fr .85fr;align-items:center;gap:48px;padding-top:96px;padding-bottom:104px}}
 .hero h1 span{display:block}
 .hero h1 .l1{font-size:clamp(30px,5.2vw,68px);line-height:1.02}
-.hero h1 .l2{font-family:var(--brocha);font-weight:400;text-transform:none;color:var(--oro);font-size:clamp(50px,7.8vw,106px);line-height:1.05;white-space:nowrap;letter-spacing:0;transform:rotate(-3deg);transform-origin:left center;margin-top:.08em}
+/* El tamaño de la línea en brocha crece con la pantalla pero sin pasarse del ancho disponible:
+   "con FOURLE4F." mide unas 6,5 veces su tamaño de letra (más un poco por la inclinación). */
+.hero h1 .l2{font-family:var(--brocha);font-weight:400;text-transform:none;color:var(--oro);font-size:clamp(40px,12vw,96px);line-height:1.15;white-space:nowrap;letter-spacing:0;transform:rotate(-3deg);transform-origin:left center;margin-top:.12em;padding-bottom:.1em}
+@media(min-width:900px){.hero h1 .l2{font-size:clamp(56px,6vw,84px)}}
 .specs{display:flex;flex-wrap:wrap;gap:8px;margin:28px 0 20px;padding:0;list-style:none}
 .specs li{border:1px solid var(--oro-linea);border-radius:2px;padding:6px 12px;font-family:var(--boton);font-stretch:125%;font-weight:600;font-size:11px;letter-spacing:.12em;text-transform:uppercase}
 .bajada{max-width:46ch;color:var(--crudo-2)}
@@ -105,7 +108,8 @@ nav.menu.abierto a{padding:14px 0;border-bottom:1px solid var(--linea)}
   .hero h1 .l2{animation:brocha 1s cubic-bezier(.2,.7,.2,1) .25s both}
   .hero-visual{animation-name:aparece;animation-duration:1.4s;animation-delay:.1s}
   @keyframes entra{from{opacity:0;transform:translateY(32px)}to{opacity:1;transform:none}}
-  @keyframes brocha{from{opacity:0;clip-path:inset(0 100% 0 0);transform:rotate(-3deg)}to{opacity:1;clip-path:inset(0 0 0 0);transform:rotate(-3deg)}}
+  /* El recorte deja margen (valores negativos) para que no se corten las colitas de letras como la "y". */
+  @keyframes brocha{from{opacity:0;clip-path:inset(-40% 100% -60% -10%);transform:rotate(-3deg)}to{opacity:1;clip-path:inset(-40% -10% -60% -10%);transform:rotate(-3deg)}}
   @keyframes aparece{from{opacity:0;transform:scale(.92) rotate(-8deg)}to{opacity:1;transform:none}}
 }
 
@@ -229,15 +233,101 @@ table.medidas{width:100%;border-collapse:collapse;font-variant-numeric:tabular-n
 .pagos li{border:1px solid var(--oro-linea);border-radius:2px;padding:8px 14px;font-weight:600;font-size:15px}
 .seguro{margin:0;color:var(--crudo-2);font-size:15px;max-width:56ch}
 
-/* Manifiesto */
-.manifiesto{padding:120px 0;border-bottom:1px solid var(--linea);background:radial-gradient(70% 60% at 50% 100%, rgba(11,93,59,.2), transparent 70%)}
-.manifiesto blockquote{margin:0;font-family:var(--titulo);font-weight:700;text-transform:uppercase;font-size:clamp(30px,5.4vw,72px);line-height:1.02;max-width:18ch}
-.manifiesto blockquote span{display:block}
-.manifiesto blockquote .brocha{font-size:1.6em;margin-top:.05em}
-.manifiesto .cuerpo{display:grid;gap:28px;margin-top:56px;max-width:900px}
-@media(min-width:800px){.manifiesto .cuerpo{grid-template-columns:repeat(2,1fr)}}
-.manifiesto .cuerpo p{color:var(--crudo-2);margin:0}
-.manifiesto .firma{margin-top:48px;color:var(--oro);font-family:var(--boton);font-stretch:125%;font-size:12px;font-weight:700;letter-spacing:.16em;text-transform:uppercase}
+/* ===== Conoce FOURLE4F ===== */
+.conoce{padding:88px 0 0;border-bottom:1px solid var(--linea);background:radial-gradient(60% 40% at 0% 8%, rgba(11,93,59,.16), transparent 70%)}
+@media(min-width:900px){.conoce{padding-top:120px}}
+.conoce .etiqueta{margin:0 0 16px}
+.conoce h2{max-width:20ch}
+.conoce h2 .brocha{display:block;font-size:1.08em;line-height:1.15;margin-top:.18em;padding-bottom:.08em;max-width:100%;transform-origin:left center}
+.co-h{font-size:clamp(26px,3.8vw,46px)}
+.co-h .oro{color:var(--oro)}
+.co-centro{text-align:center;margin:0 auto;max-width:none}
+.conoce p{color:var(--crudo-2)}
+
+/* Foto o ilustración (las fotos se configuran en js/config.js → conoce.fotos) */
+.co-foto{margin:0;position:relative;overflow:hidden;border:1px solid var(--oro-linea);border-radius:2px;aspect-ratio:1/1;background:var(--carbon)}
+.co-foto.con-foto img{position:absolute;inset:0;width:100%;height:100%;object-fit:cover}
+.co-foto.ilustrada{display:grid;place-items:center;background:
+  radial-gradient(80% 70% at 50% 45%, rgba(11,93,59,.28), transparent 72%),
+  repeating-linear-gradient(45deg, rgba(237,230,214,.035) 0 2px, transparent 2px 6px),
+  repeating-linear-gradient(-45deg, rgba(237,230,214,.035) 0 2px, transparent 2px 6px),
+  var(--carbon)}
+.co-foto.ilustrada svg{width:62%;height:auto;fill:none;stroke:rgba(237,230,214,.55);stroke-width:2;stroke-linejoin:round;stroke-linecap:round}
+.co-foto.ilustrada .oro{stroke:var(--oro)}
+.co-foto.ilustrada .fino{stroke-width:1;opacity:.6}
+.co-foto.ilustrada .punteada{stroke-dasharray:6 7;stroke-width:2.4}
+.co-foto.il-tela{background:
+  radial-gradient(70% 70% at 50% 50%, rgba(11,93,59,.22), transparent 75%),
+  repeating-linear-gradient(90deg, rgba(237,230,214,.06) 0 3px, transparent 3px 7px),
+  repeating-linear-gradient(0deg, rgba(8,8,7,.55) 0 2px, transparent 2px 5px),
+  var(--carbon)}
+.co-foto.il-tela svg{width:100%}
+
+/* 1. Introducción */
+.co-intro{display:grid;gap:40px;align-items:center}
+@media(min-width:900px){.co-intro{grid-template-columns:1.25fr .75fr;gap:72px}}
+.co-intro h2{font-size:clamp(30px,4.6vw,60px)}
+.co-lead{font-size:clamp(17px,1.6vw,19px);max-width:52ch;margin:28px 0 32px}
+.co-foto-alta{aspect-ratio:4/5;max-width:320px;width:100%;justify-self:center}
+@media(min-width:900px){.co-foto-alta{justify-self:end;max-width:440px}}
+
+/* 2. Qué es */
+.co-que{display:grid;gap:40px;align-items:center;margin-top:96px}
+@media(min-width:900px){.co-que{grid-template-columns:.95fr 1.05fr;gap:72px;margin-top:140px}}
+.co-collage{display:grid;grid-template-columns:1fr 1fr;gap:14px;align-items:start}
+.co-collage .co-foto:last-child{margin-top:44px}
+.co-que-texto p{max-width:52ch}
+.co-que-texto .co-h{margin-bottom:24px}
+.conoce .co-remate{color:var(--crudo);font-weight:600;border-left:2px solid var(--oro);padding-left:16px;margin-top:24px}
+
+/* 3. El trébol */
+.co-trebol{margin-top:96px;padding:80px 0;background:var(--monte);border-top:1px solid var(--linea);border-bottom:1px solid var(--linea);position:relative;overflow:hidden}
+@media(min-width:900px){.co-trebol{margin-top:140px;padding:112px 0}}
+.co-trebol::before{content:"";position:absolute;inset:0;pointer-events:none;background:radial-gradient(45% 60% at 22% 45%, rgba(201,165,78,.1), transparent 70%)}
+.co-trebol-in{position:relative;display:grid;gap:36px;align-items:center}
+@media(min-width:860px){.co-trebol-in{grid-template-columns:minmax(220px,360px) 1fr;gap:72px}}
+.co-trebol-img{width:min(64vw,300px);justify-self:center;mix-blend-mode:lighten}
+.co-trebol-img img{width:100%;height:auto;-webkit-mask-image:radial-gradient(closest-side,#000 80%,transparent 100%);mask-image:radial-gradient(closest-side,#000 80%,transparent 100%)}
+.co-trebol-texto .co-h{margin-bottom:24px}
+.co-trebol-texto p{max-width:54ch}
+.conoce .co-eslogan{position:relative;margin:56px 0 0;text-align:center;font-family:var(--brocha);color:var(--oro);font-size:clamp(36px,5.6vw,72px);line-height:1.15;padding:.1em 0 .15em;transform:rotate(-2deg)}
+
+/* 4 y 5. Misión y visión */
+.co-mv{display:grid;gap:40px;margin-top:96px}
+@media(min-width:900px){.co-mv{grid-template-columns:1.1fr .9fr;grid-template-areas:"mision foto" "vision foto";gap:56px 72px;margin-top:140px;align-items:start}
+  .co-mision{grid-area:mision}.co-vision{grid-area:vision}.co-foto-mision{grid-area:foto}}
+.co-mv .co-h{margin-bottom:20px}
+.conoce .co-declara{font-family:var(--texto);font-size:clamp(19px,2vw,25px);line-height:1.45;color:var(--crudo);max-width:40ch;margin:0}
+.co-vision{border-top:1px solid var(--oro-linea);padding-top:40px}
+.co-foto-mision{aspect-ratio:4/5;width:100%;max-width:320px;justify-self:center}
+@media(min-width:900px){.co-foto-mision{justify-self:end;align-self:center;max-width:460px}}
+
+/* 6. Principios */
+.co-principios-wrap{margin-top:96px}
+@media(min-width:900px){.co-principios-wrap{margin-top:140px}}
+.co-principios{list-style:none;margin:40px 0 0;padding:0;display:grid;gap:0}
+@media(min-width:620px){.co-principios{grid-template-columns:1fr 1fr;gap:0 32px}}
+@media(min-width:1000px){.co-principios{grid-template-columns:repeat(4,1fr)}}
+.co-principios li{padding:28px 0;border-top:1px solid var(--oro-linea)}
+.co-principios svg{width:44px;height:44px;fill:none;stroke:var(--oro);stroke-width:2;stroke-linecap:round;stroke-linejoin:round}
+.co-principios circle{fill:none}
+.co-principios h3{font-family:var(--titulo);font-size:17px;font-weight:600;text-transform:uppercase;margin:16px 0 8px;line-height:1.2}
+.co-principios p{margin:0;max-width:30ch}
+
+/* 7. Cierre */
+.co-cierre{text-align:center;padding:104px 16px 112px;display:flex;flex-direction:column;align-items:center}
+@media(min-width:900px){.co-cierre{padding:140px 32px 140px}}
+.co-cierre h2{font-size:clamp(34px,6vw,80px);max-width:none}
+.co-cierre h2 .brocha{transform-origin:center}
+.co-cierre p{max-width:50ch;margin:28px auto 0}
+.conoce .co-eslogan-chico{font-size:clamp(28px,4vw,44px);margin:28px 0 36px}
+
+/* Aparición suave (solo si la persona no pidió menos movimiento; lo activa app.js) */
+.con-aparicion .aparece{opacity:0;translate:0 26px;transition:opacity .8s cubic-bezier(.2,.7,.2,1),translate .8s cubic-bezier(.2,.7,.2,1)}
+.con-aparicion .aparece.visible{opacity:1;translate:0 0}
+.con-aparicion .co-principios li:nth-child(2){transition-delay:.08s}
+.con-aparicion .co-principios li:nth-child(3){transition-delay:.16s}
+.con-aparicion .co-principios li:nth-child(4){transition-delay:.24s}
 
 /* Reseñas */
 .resenas h2{max-width:16ch}

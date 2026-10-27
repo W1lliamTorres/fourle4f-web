@@ -34,6 +34,7 @@ Esta guía explica cómo cambiar los datos del sitio sin saber programar.
 | `promo.activa` | Muestra u oculta la barra verde de arriba | `true` o `false` |
 | `promo.texto` | El texto de esa barra | `"Nuevo drop disponible"` |
 | `hero.foto` | Foto grande del inicio. Vacía = se muestra el trébol bordado | `"img/hero.jpg"` |
+| `conoce.fotos` | Las 4 fotos de la sección "Conoce FOURLE4F" (outfit, dobladas, tela, mision). Vacías = ilustración de prenda sobre textura de tela (ver punto 4) | `outfit: { foto:"img/conoce-outfit.jpg", alt:"..." }` |
 | `limitado.nombre`, `titulo`, `texto`, `edicion` | Textos de la sección Limitado | — |
 | `limitado.agotado` | `true` muestra el sello "Agotado" y bloquea la línea limitada | `false` |
 | `pagos` | Medios de pago. Salen en "Cómo comprar", en la bolsa y en el pie de página. **No pongas números de cuenta aquí**: esos se envían por WhatsApp | `["Nequi", "Llaves bancarias"]` |
@@ -70,6 +71,11 @@ Cada línea de tela es una tarjeta del catálogo y una pestaña de la guía de t
 2. En el color correspondiente, escribe la ruta: `foto:"img/premium-negro.jpg"`.
 3. Si tienes foto de espalda, ponla en `fotoEspalda:"img/premium-negro-espalda.jpg"`. En computador se ve al pasar el mouse y en celular con los botones "Frente / Espalda".
 4. Para el inicio, pon una foto vertical en `hero.foto`. Si la dejas vacía, se muestra el trébol bordado.
+5. Para la sección "Conoce FOURLE4F", llena `conoce.fotos` (cada una con su `foto` y su `alt`, que es la descripción para quien no ve la imagen). Usa solo fotos de prendas que vendes:
+   - `outfit`: persona con un outfit FOURLE4F, de cuerpo entero (vertical, 1200 × 1500 px).
+   - `dobladas`: camisetas dobladas o apiladas (cuadrada, 1200 × 1200 px).
+   - `tela`: primer plano de la tela o de una costura (cuadrada, 1200 × 1200 px).
+   - `mision`: prendas reales colgadas o sobre una superficie (vertical, 1200 × 1500 px).
 
 **Tamaño recomendado**
 - **Fotos de producto:** 1200 × 1500 px (formato vertical 4:5), en JPG o WebP, de menos de 200 KB cada una. Puedes comprimirlas gratis en [squoosh.app](https://squoosh.app).

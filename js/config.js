@@ -34,6 +34,21 @@ const CONFIG = {
     textoAlternativo: "Modelo con camiseta oversized FOURLE4F"
   },
 
+  // Sección "Conoce FOURLE4F": fotos de la marca. Vacía ("") = ilustración de prenda sobre textura de tela.
+  // Usa SOLO fotos de prendas que vendes (que no parezcan productos que no existen).
+  //   outfit:   persona con un outfit FOURLE4F, de cuerpo entero (vertical, 1200 x 1500 px)
+  //   dobladas: camisetas dobladas o apiladas (cuadrada, 1200 x 1200 px)
+  //   tela:     primer plano de la tela o una costura (cuadrada, 1200 x 1200 px)
+  //   mision:   prendas reales colgadas o sobre una superficie (vertical, 1200 x 1500 px)
+  conoce: {
+    fotos: {
+      outfit:   { foto: "", alt: "Outfit urbano con camiseta oversized FOURLE4F" },
+      dobladas: { foto: "", alt: "Camisetas FOURLE4F dobladas" },
+      tela:     { foto: "", alt: "Detalle de la tela de una camiseta FOURLE4F" },
+      mision:   { foto: "", alt: "Prendas FOURLE4F" }
+    }
+  },
+
   // Sección "Limitado". Toma la tela y las tallas de la línea marcada con limitada:true.
   limitado: {
     nombre: "Drop 01 · Edición limitada",
