@@ -266,6 +266,14 @@ $("#filtros").innerHTML = opciones.map(c =>
   `<button type="button" class="filtro" data-cat="${esc(c.id)}" aria-pressed="${c.id === "todo"}">${esc(c.id === "todo" ? "Todo" : c.nombre)}</button>`).join("");
 $("#subCat").innerHTML = opciones.map(c =>
   `<li><a href="#catalogo" data-cat="${esc(c.id)}">${esc(c.nombre)}</a></li>`).join("");
+const AF = CONFIG.avisoFotos || {};
+if (AF.activo){
+  $("#avFotTitulo").textContent = AF.titulo || "";
+  $("#avFotTexto").textContent = AF.texto || "";
+  $("#avFotBtnTxt").textContent = AF.boton || "WhatsApp";
+  $("#avFotBtn").href = wa(AF.mensaje || "Hola FOURLE4F, quiero ver las fotos sin difuminar.");
+  $("#avisoFotos").hidden = false;
+}
 if (CONFIG.avisoOriginales){ $("#avisoOriginales").textContent = CONFIG.avisoOriginales; $("#avisoOriginales").hidden = false; }
 
 function filtrar(cat){

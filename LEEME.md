@@ -41,6 +41,7 @@ Esta guía explica cómo cambiar los datos del sitio sin saber programar.
 | `proximo` | Sección misteriosa "Próximamente" que lleva a Instagram. `activa: false` la oculta | — |
 | `categorias` | Subsecciones del menú desplegable "Catálogo" y de los filtros | — |
 | `avisoOriginales` | Frase que sale sobre el catálogo. `""` la quita | — |
+| `avisoFotos` | Franja "¿Quieres ver las prendas sin difuminar?" con botón a WhatsApp. `activo: false` la quita | — |
 | `disenos` | Las prendas con foto (punto 3A) | — |
 | `productos` | Las básicas por tela (punto 3B) | — |
 | `municipios` | Las opciones de entrega que ve el cliente | — |
@@ -55,7 +56,7 @@ Cada prenda es una línea:
 
 - **`categoria`:** `"hombre"` (Hombre / Unisex), `"mujer"` o `"hoodies"`.
 - **`limitada: true`:** la prenda sale también en "Edición limitada", con borde dorado, y su foto aparece en el ticket de la sección Limitado.
-- **`mostrar: false`:** la prenda queda guardada pero no se ve en la página. Así están hoy las prendas en las que, al tapar el logo, se perdió casi todo el diseño.
+- **`mostrar: false`:** la prenda queda guardada pero no se ve en la página.
 - **Varias fotos:** `fotos:["img/catalogo/a.jpg","img/catalogo/b.jpg"]`. Se deslizan en el celular y tienen flechas en el computador.
 - **Tallas distintas por color:** ponlas dentro del color, por ejemplo `{nombre:"Negro",hex:"#2E2E2E",tallas:["M","XL"]}`.
 - **Fotos nuevas:** formato vertical 3:4 (900 × 1200 px), menos de 150 KB, en `img/catalogo/`. Usa nombres sin marcas (ej. `camiseta-halo.jpg`), porque el nombre del archivo se ve en internet.

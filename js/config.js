@@ -86,6 +86,15 @@ const CONFIG = {
   // Aviso que sale arriba del catálogo. "" para quitarlo.
   avisoOriginales: "Todas nuestras prendas son 100% originales.",
 
+  // Franja sobre el catálogo para pedir las fotos sin difuminar por WhatsApp. activo: false la quita.
+  avisoFotos: {
+    activo: true,
+    titulo: "¿Quieres ver las prendas sin difuminar?",
+    texto: "Por respeto a las marcas tapamos los logos en la web. Escríbenos y te enviamos las fotos completas por WhatsApp.",
+    boton: "Pedir fotos por WhatsApp",
+    mensaje: "Hola FOURLE4F, quiero ver las fotos sin difuminar de estas prendas: ___"
+  },
+
   // ===================================================================
   // PRENDAS CON FOTO (una tarjeta por diseño).
   // Para agregar una: copia una línea completa { ... }, pégala debajo y cámbiala.
@@ -103,8 +112,8 @@ const CONFIG = {
   // ===================================================================
   disenos: [   // SUPUESTO: nombres, precios y tallas. Ajusta a lo real.
     { id:"limitada-02", nombre:"Firma Bordada", tipo:"Camiseta", categoria:"hombre", limitada:true, mostrar:true,  precio:149900, tallas:["S","M","L","XL"], colores:[{nombre:"Blanco",hex:"#EEEAE2"},{nombre:"Negro",hex:"#151515"}], fotos:["img/catalogo/limitada-02.jpg"] },
-    { id:"limitada-01", nombre:"Escudo Barroco", tipo:"Camiseta", categoria:"hombre", limitada:true, mostrar:false, precio:149900, tallas:["S","M","L","XL"], colores:[{nombre:"Blanco",hex:"#EEEAE2"},{nombre:"Negro",hex:"#151515"}], fotos:["img/catalogo/limitada-01.jpg"] },
-    { id:"limitada-03", nombre:"Racing", tipo:"Camiseta", categoria:"hombre", limitada:true, mostrar:false, precio:149900, tallas:["S","M","L","XL"], colores:[{nombre:"Blanco",hex:"#EEEAE2"},{nombre:"Azul noche",hex:"#141826"}], fotos:["img/catalogo/limitada-03.jpg"] },
+    { id:"limitada-01", nombre:"Escudo Barroco", tipo:"Camiseta", categoria:"hombre", limitada:true, mostrar:true , precio:149900, tallas:["S","M","L","XL"], colores:[{nombre:"Blanco",hex:"#EEEAE2"},{nombre:"Negro",hex:"#151515"}], fotos:["img/catalogo/limitada-01.jpg"] },
+    { id:"limitada-03", nombre:"Racing", tipo:"Camiseta", categoria:"hombre", limitada:true, mostrar:true , precio:149900, tallas:["S","M","L","XL"], colores:[{nombre:"Blanco",hex:"#EEEAE2"},{nombre:"Azul noche",hex:"#141826"}], fotos:["img/catalogo/limitada-03.jpg"] },
 
     { id:"camiseta-halo",       nombre:"Halo",            tipo:"Camiseta", categoria:"hombre", mostrar:true,  precio:119900, tallas:["S","M","L","XL"], colores:[{nombre:"Negro",hex:"#151515"},{nombre:"Blanco",hex:"#EEEAE2"}], fotos:["img/catalogo/camiseta-halo.jpg"] },
     { id:"camiseta-jinete",     nombre:"Jinete",          tipo:"Camiseta", categoria:"hombre", mostrar:true,  precio:119900, tallas:["S","M","L","XL"], colores:[{nombre:"Negro",hex:"#151515"},{nombre:"Blanco",hex:"#EEEAE2"}], fotos:["img/catalogo/camiseta-jinete.jpg"] },
@@ -122,21 +131,21 @@ const CONFIG = {
     { id:"polo-ribete",         nombre:"Ribete",          tipo:"Polo",     categoria:"hombre", mostrar:true,  precio:129900, tallas:["S","M","L","XL"], colores:[{nombre:"Negro",hex:"#151515"},{nombre:"Verde",hex:"#1F5A3A"},{nombre:"Blanco",hex:"#EEEAE2"}], fotos:["img/catalogo/polo-ribete.jpg"] },
     { id:"polo-contraste",      nombre:"Contraste",       tipo:"Polo",     categoria:"hombre", mostrar:true,  precio:129900, tallas:["S","M","L","XL"], colores:[{nombre:"Negro",hex:"#151515"},{nombre:"Verde oliva",hex:"#8A9A72"},{nombre:"Blanco",hex:"#EEEAE2"}], fotos:["img/catalogo/polo-contraste.jpg"] },
 
-    // Ocultas (mostrar:false): al tapar el logo se perdió casi todo el diseño.
-    { id:"camiseta-relieve",     nombre:"Relieve",     tipo:"Camiseta", categoria:"hombre", mostrar:false, precio:119900, tallas:["S","M","L","XL"], colores:[{nombre:"Negro",hex:"#151515"},{nombre:"Verde",hex:"#1F5A3A"},{nombre:"Blanco",hex:"#EEEAE2"}], fotos:["img/catalogo/camiseta-relieve.jpg"] },
-    { id:"camiseta-varsity",     nombre:"Varsity",     tipo:"Camiseta", categoria:"hombre", mostrar:false, precio:119900, tallas:["S","M","L","XL"], colores:[{nombre:"Negro",hex:"#151515"},{nombre:"Blanco",hex:"#EEEAE2"}], fotos:["img/catalogo/camiseta-varsity.jpg"] },
-    { id:"camiseta-studio",      nombre:"Studio",      tipo:"Camiseta", categoria:"hombre", mostrar:false, precio:119900, tallas:["S","M","L","XL"], colores:[{nombre:"Negro",hex:"#151515"},{nombre:"Blanco",hex:"#EEEAE2"}], fotos:["img/catalogo/camiseta-studio.jpg"] },
-    { id:"camiseta-contorno",    nombre:"Contorno",    tipo:"Camiseta", categoria:"hombre", mostrar:false, precio:119900, tallas:["S","M","L","XL"], colores:[{nombre:"Negro",hex:"#151515"},{nombre:"Azul noche",hex:"#1B2236"},{nombre:"Blanco",hex:"#EEEAE2"}], fotos:["img/catalogo/camiseta-contorno.jpg"] },
-    { id:"camiseta-gotica",      nombre:"Gótica",      tipo:"Camiseta", categoria:"hombre", mostrar:false, precio:119900, tallas:["S","M","L","XL"], colores:[{nombre:"Negro",hex:"#151515"},{nombre:"Blanco",hex:"#EEEAE2"}], fotos:["img/catalogo/camiseta-gotica.jpg"] },
-    { id:"camiseta-tipografica", nombre:"Tipográfica", tipo:"Camiseta", categoria:"hombre", mostrar:false, precio:119900, tallas:["S","M","L","XL"], colores:[{nombre:"Negro",hex:"#151515"},{nombre:"Gris",hex:"#4A4F57"},{nombre:"Azul",hex:"#6E8FB5"}], fotos:["img/catalogo/camiseta-tipografica.jpg"] },
-    { id:"camiseta-huesos",      nombre:"Huesos",      tipo:"Camiseta", categoria:"hombre", mostrar:false, precio:119900, tallas:["S","M","L","XL"], colores:[{nombre:"Negro",hex:"#151515"},{nombre:"Blanco",hex:"#EEEAE2"}], fotos:["img/catalogo/camiseta-huesos.jpg"] },
-    { id:"camiseta-bloque",      nombre:"Bloque",      tipo:"Camiseta", categoria:"hombre", mostrar:false, precio:119900, tallas:["S","M","L","XL"], colores:[{nombre:"Negro",hex:"#151515"},{nombre:"Rojo",hex:"#B3121F"},{nombre:"Blanco",hex:"#EEEAE2"}], fotos:["img/catalogo/camiseta-bloque.jpg"] },
-    { id:"camiseta-angeles",     nombre:"Ángeles",     tipo:"Camiseta", categoria:"hombre", mostrar:false, precio:119900, tallas:["S","M","L","XL"], colores:[{nombre:"Negro",hex:"#151515"},{nombre:"Blanco",hex:"#EEEAE2"}], fotos:["img/catalogo/camiseta-angeles.jpg"] },
-    { id:"camiseta-caricatura",  nombre:"Caricatura",  tipo:"Camiseta", categoria:"hombre", mostrar:false, precio:119900, tallas:["S","M","L","XL"], colores:[{nombre:"Negro",hex:"#151515"},{nombre:"Blanco",hex:"#EEEAE2"}], fotos:["img/catalogo/camiseta-caricatura.jpg"] },
-    { id:"camiseta-firma",       nombre:"Firma",       tipo:"Camiseta", categoria:"hombre", mostrar:false, precio:119900, tallas:["S","M","L","XL"], colores:[{nombre:"Negro",hex:"#151515"},{nombre:"Blanco",hex:"#EEEAE2"}], fotos:["img/catalogo/camiseta-firma.jpg"] },
+    // Prendas donde el logo tapado ocupa casi todo el estampado.
+    { id:"camiseta-relieve",     nombre:"Relieve",     tipo:"Camiseta", categoria:"hombre", mostrar:true , precio:119900, tallas:["S","M","L","XL"], colores:[{nombre:"Negro",hex:"#151515"},{nombre:"Verde",hex:"#1F5A3A"},{nombre:"Blanco",hex:"#EEEAE2"}], fotos:["img/catalogo/camiseta-relieve.jpg"] },
+    { id:"camiseta-varsity",     nombre:"Varsity",     tipo:"Camiseta", categoria:"hombre", mostrar:true , precio:119900, tallas:["S","M","L","XL"], colores:[{nombre:"Negro",hex:"#151515"},{nombre:"Blanco",hex:"#EEEAE2"}], fotos:["img/catalogo/camiseta-varsity.jpg"] },
+    { id:"camiseta-studio",      nombre:"Studio",      tipo:"Camiseta", categoria:"hombre", mostrar:true , precio:119900, tallas:["S","M","L","XL"], colores:[{nombre:"Negro",hex:"#151515"},{nombre:"Blanco",hex:"#EEEAE2"}], fotos:["img/catalogo/camiseta-studio.jpg"] },
+    { id:"camiseta-contorno",    nombre:"Contorno",    tipo:"Camiseta", categoria:"hombre", mostrar:true , precio:119900, tallas:["S","M","L","XL"], colores:[{nombre:"Negro",hex:"#151515"},{nombre:"Azul noche",hex:"#1B2236"},{nombre:"Blanco",hex:"#EEEAE2"}], fotos:["img/catalogo/camiseta-contorno.jpg"] },
+    { id:"camiseta-gotica",      nombre:"Gótica",      tipo:"Camiseta", categoria:"hombre", mostrar:true , precio:119900, tallas:["S","M","L","XL"], colores:[{nombre:"Negro",hex:"#151515"},{nombre:"Blanco",hex:"#EEEAE2"}], fotos:["img/catalogo/camiseta-gotica.jpg"] },
+    { id:"camiseta-tipografica", nombre:"Tipográfica", tipo:"Camiseta", categoria:"hombre", mostrar:true , precio:119900, tallas:["S","M","L","XL"], colores:[{nombre:"Negro",hex:"#151515"},{nombre:"Gris",hex:"#4A4F57"},{nombre:"Azul",hex:"#6E8FB5"}], fotos:["img/catalogo/camiseta-tipografica.jpg"] },
+    { id:"camiseta-huesos",      nombre:"Huesos",      tipo:"Camiseta", categoria:"hombre", mostrar:true , precio:119900, tallas:["S","M","L","XL"], colores:[{nombre:"Negro",hex:"#151515"},{nombre:"Blanco",hex:"#EEEAE2"}], fotos:["img/catalogo/camiseta-huesos.jpg"] },
+    { id:"camiseta-bloque",      nombre:"Bloque",      tipo:"Camiseta", categoria:"hombre", mostrar:true , precio:119900, tallas:["S","M","L","XL"], colores:[{nombre:"Negro",hex:"#151515"},{nombre:"Rojo",hex:"#B3121F"},{nombre:"Blanco",hex:"#EEEAE2"}], fotos:["img/catalogo/camiseta-bloque.jpg"] },
+    { id:"camiseta-angeles",     nombre:"Ángeles",     tipo:"Camiseta", categoria:"hombre", mostrar:true , precio:119900, tallas:["S","M","L","XL"], colores:[{nombre:"Negro",hex:"#151515"},{nombre:"Blanco",hex:"#EEEAE2"}], fotos:["img/catalogo/camiseta-angeles.jpg"] },
+    { id:"camiseta-caricatura",  nombre:"Caricatura",  tipo:"Camiseta", categoria:"hombre", mostrar:true , precio:119900, tallas:["S","M","L","XL"], colores:[{nombre:"Negro",hex:"#151515"},{nombre:"Blanco",hex:"#EEEAE2"}], fotos:["img/catalogo/camiseta-caricatura.jpg"] },
+    { id:"camiseta-firma",       nombre:"Firma",       tipo:"Camiseta", categoria:"hombre", mostrar:true , precio:119900, tallas:["S","M","L","XL"], colores:[{nombre:"Negro",hex:"#151515"},{nombre:"Blanco",hex:"#EEEAE2"}], fotos:["img/catalogo/camiseta-firma.jpg"] },
 
     { id:"mujer-corazon", nombre:"Corazón Bordado", tipo:"Camiseta", categoria:"mujer", mostrar:true,  precio:119900, tallas:["S","M","L"], colores:[{nombre:"Blanco",hex:"#EEEAE2"},{nombre:"Rojo",hex:"#C8161D"},{nombre:"Negro",hex:"#151515"}], fotos:["img/catalogo/mujer-corazon.jpg"] },
-    { id:"mujer-franjas", nombre:"Franjas",         tipo:"Camiseta", categoria:"mujer", mostrar:false, precio:119900, tallas:["S","M","L"], colores:[{nombre:"Blanco",hex:"#EEEAE2"},{nombre:"Café",hex:"#8E7A5E"},{nombre:"Negro",hex:"#151515"}], fotos:["img/catalogo/mujer-franjas.jpg"] },
+    { id:"mujer-franjas", nombre:"Franjas",         tipo:"Camiseta", categoria:"mujer", mostrar:true , precio:119900, tallas:["S","M","L"], colores:[{nombre:"Blanco",hex:"#EEEAE2"},{nombre:"Café",hex:"#8E7A5E"},{nombre:"Negro",hex:"#151515"}], fotos:["img/catalogo/mujer-franjas.jpg"] },
 
     // Las tallas por color salen de la foto del proveedor.
     { id:"hoodie-grafiti", nombre:"Grafiti París", tipo:"Hoodie", categoria:"hoodies", mostrar:true, precio:189900, tallas:["M","L","XL","2XL"],

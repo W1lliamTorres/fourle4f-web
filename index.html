@@ -25,7 +25,7 @@
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Archivo:wdth,wght@62..125,400..800&family=Knewave&family=Unbounded:wght@400..800&display=swap" rel="stylesheet">
 <!-- El "?v=" obliga a los navegadores a bajar la versión nueva. Súbelo (ej. a 3) cada vez que cambies estilos o código. -->
-<link rel="stylesheet" href="css/estilos.css?v=3">
+<link rel="stylesheet" href="css/estilos.css?v=4">
 </head>
 <body>
 
@@ -112,6 +112,13 @@
     <div class="filtros-barra">
       <div class="filtros" id="filtros" role="group" aria-label="Filtrar catálogo"></div>
       <p class="originales" id="avisoOriginales" hidden></p>
+    </div>
+    <div class="aviso-fotos" id="avisoFotos" hidden>
+      <div>
+        <h3 id="avFotTitulo"></h3>
+        <p id="avFotTexto"></p>
+      </div>
+      <a class="btn btn-wa" id="avFotBtn" target="_blank" rel="noopener"><svg aria-hidden="true"><use href="#i-wa"/></svg><span id="avFotBtnTxt"></span></a>
     </div>
     <p class="sr" id="conteoCat" aria-live="polite"></p>
     <div class="grid-prod" id="productos"></div>
@@ -365,7 +372,7 @@
 </aside>
 <div class="toast" id="toast" role="status"></div>
 
-<script src="js/config.js?v=3"></script>
-<script src="js/app.js?v=3"></script>
+<script src="js/config.js?v=4"></script>
+<script src="js/app.js?v=4"></script>
 </body>
 </html>

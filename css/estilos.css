@@ -486,3 +486,12 @@ nav.menu.abierto .submenu a{padding:10px 0;border:0;font-size:11px}
   .ver-guia{font-size:12px}
   .filtros-barra{margin-top:-20px}
 }
+
+/* Franja: pedir fotos sin difuminar */
+.aviso-fotos{display:grid;gap:16px 28px;align-items:center;margin:0 0 32px;padding:20px 22px;border:1px solid var(--oro);border-radius:4px;
+  background:linear-gradient(90deg,rgba(201,165,78,.12),rgba(11,93,59,.14))}
+.aviso-fotos[hidden]{display:none}
+.aviso-fotos h3{margin:0 0 4px;font-family:var(--titulo);font-weight:700;font-size:clamp(16px,2.2vw,22px);text-transform:uppercase;line-height:1.15;color:var(--crudo)}
+.aviso-fotos p{margin:0;color:var(--crudo-2);font-size:15px;max-width:60ch}
+.aviso-fotos .btn{justify-self:start}
+@media(min-width:860px){.aviso-fotos{grid-template-columns:1fr auto;padding:22px 28px}}
