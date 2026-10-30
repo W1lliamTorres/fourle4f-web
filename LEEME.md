@@ -38,10 +38,30 @@ Esta guía explica cómo cambiar los datos del sitio sin saber programar.
 | `limitado.nombre`, `titulo`, `texto`, `edicion` | Textos de la sección Limitado | — |
 | `limitado.agotado` | `true` muestra el sello "Agotado" y bloquea la línea limitada | `false` |
 | `pagos` | Medios de pago. Salen en "Cómo comprar", en la bolsa y en el pie de página. **No pongas números de cuenta aquí**: esos se envían por WhatsApp | `["Nequi", "Llaves bancarias"]` |
-| `productos` | Las líneas de tela (punto 3) | — |
+| `proximo` | Sección misteriosa "Próximamente" que lleva a Instagram. `activa: false` la oculta | — |
+| `categorias` | Subsecciones del menú desplegable "Catálogo" y de los filtros | — |
+| `avisoOriginales` | Frase que sale sobre el catálogo. `""` la quita | — |
+| `disenos` | Las prendas con foto (punto 3A) | — |
+| `productos` | Las básicas por tela (punto 3B) | — |
 | `municipios` | Las opciones de entrega que ve el cliente | — |
 
-## 3. Productos (líneas de tela)
+## 3A. Prendas con foto (`disenos`)
+
+Cada prenda es una línea:
+
+```js
+{ id:"camiseta-halo", nombre:"Halo", tipo:"Camiseta", categoria:"hombre", mostrar:true, precio:119900, tallas:["S","M","L","XL"], colores:[{nombre:"Negro",hex:"#151515"},{nombre:"Blanco",hex:"#EEEAE2"}], fotos:["img/catalogo/camiseta-halo.jpg"] },
+```
+
+- **`categoria`:** `"hombre"` (Hombre / Unisex), `"mujer"` o `"hoodies"`.
+- **`limitada: true`:** la prenda sale también en "Edición limitada", con borde dorado, y su foto aparece en el ticket de la sección Limitado.
+- **`mostrar: false`:** la prenda queda guardada pero no se ve en la página. Así están hoy las prendas en las que, al tapar el logo, se perdió casi todo el diseño.
+- **Varias fotos:** `fotos:["img/catalogo/a.jpg","img/catalogo/b.jpg"]`. Se deslizan en el celular y tienen flechas en el computador.
+- **Tallas distintas por color:** ponlas dentro del color, por ejemplo `{nombre:"Negro",hex:"#2E2E2E",tallas:["M","XL"]}`.
+- **Fotos nuevas:** formato vertical 3:4 (900 × 1200 px), menos de 150 KB, en `img/catalogo/`. Usa nombres sin marcas (ej. `camiseta-halo.jpg`), porque el nombre del archivo se ve en internet.
+- **`agotado: true`:** se ve, pero no se puede pedir.
+
+## 3B. Básicas por tela (`productos`)
 
 Cada línea de tela es una tarjeta del catálogo y una pestaña de la guía de tallas:
 
@@ -134,6 +154,7 @@ El sitio en fourle4f.com se actualiza solo desde GitHub: cada vez que se suben c
 |---|---|
 | `js/config.js` → `whatsapp` | Número definitivo (hoy está el temporal 312 218 1447) |
 | `js/config.js` → `redes.tiktok` y `redes.facebook` | Cuando crees las cuentas |
+| `js/config.js` → `disenos` | Nombres, precios ($119.900 camisetas, $129.900 polos, $149.900 limitada, $189.900 hoodie), tallas y colores reales de cada prenda con foto |
 | `js/config.js` → `productos` → `precio` | Precios reales (hoy: $109.900, $89.900, $94.900 y $69.900) |
 | `js/config.js` → `productos` → `colores` | Colores reales de cada línea |
 | `js/config.js` → `productos` → `nombre` "Esencial" | Nombre definitivo de la línea de 210 g |

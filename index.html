@@ -25,7 +25,7 @@
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Archivo:wdth,wght@62..125,400..800&family=Knewave&family=Unbounded:wght@400..800&display=swap" rel="stylesheet">
 <!-- El "?v=" obliga a los navegadores a bajar la versión nueva. Súbelo (ej. a 3) cada vez que cambies estilos o código. -->
-<link rel="stylesheet" href="css/estilos.css?v=2">
+<link rel="stylesheet" href="css/estilos.css?v=3">
 </head>
 <body>
 
@@ -48,7 +48,10 @@
     </a>
     <nav class="menu" id="menu" aria-label="Principal">
       <a href="#limitado">Limitado</a>
-      <a href="#catalogo">Catálogo</a>
+      <div class="menu-cat" id="menuCat">
+        <button type="button" class="menu-cat-btn" id="btnCat" aria-expanded="false" aria-controls="subCat">Catálogo<svg aria-hidden="true" viewBox="0 0 12 12"><path d="m2.5 4.5 3.5 3.5 3.5-3.5"/></svg></button>
+        <ul class="submenu" id="subCat"></ul>
+      </div>
       <a href="#tallas">Tallas</a>
       <a href="#comprar">Cómo comprar</a>
       <a href="#conoce">Nosotros</a>
@@ -83,7 +86,8 @@
         <div class="etiqueta" id="limNombre"></div>
         <h2 id="limTitulo"></h2>
         <p class="lim-texto" id="limTexto"></p>
-        <a class="btn btn-solido" id="limBtn" href="#catalogo">Apartar la mía</a>
+        <div class="lim-fotos" id="limFotos"></div>
+        <a class="btn btn-solido" id="limBtn" href="#catalogo" data-cat="limitada">Apartar la mía</a>
       </div>
       <div class="ticket-talon">
         <dl class="datos">
@@ -105,6 +109,11 @@
       <h2>Catálogo</h2>
       <p>Escoge color y talla, añade a la bolsa y envía tu pedido por WhatsApp. Te confirmamos disponibilidad y entrega.</p>
     </div>
+    <div class="filtros-barra">
+      <div class="filtros" id="filtros" role="group" aria-label="Filtrar catálogo"></div>
+      <p class="originales" id="avisoOriginales" hidden></p>
+    </div>
+    <p class="sr" id="conteoCat" aria-live="polite"></p>
     <div class="grid-prod" id="productos"></div>
     <p class="aviso-talla"><b>No hacemos cambios de talla.</b> Antes de pedir, revisa la <a href="#tallas">guía de tallas</a>.</p>
   </div>
@@ -172,6 +181,26 @@
         <ul class="pagos" id="pagosLista"></ul>
       </div>
       <p class="seguro">Los datos para pagar te los enviamos solo desde nuestro WhatsApp oficial, al confirmar tu pedido. Si alguien más te pide un pago a nombre de FOURLE4F, no es nuestro.</p>
+    </div>
+  </div>
+</section>
+
+<!-- ================= PRÓXIMAMENTE =================
+     Textos en js/config.js → proximo. activa:false la oculta. -->
+<section class="proximo" id="proximo" aria-labelledby="proxTitulo" hidden>
+  <div class="prox-ruido" aria-hidden="true"></div>
+  <div class="wrap prox-in">
+    <div class="prox-visual" aria-hidden="true">
+      <svg viewBox="0 0 260 220"><path d="M80 20 L40 40 L10 90 L45 105 L60 82 L60 205 L200 205 L200 82 L215 105 L250 90 L220 40 L180 20 Q130 50 80 20Z"/></svg>
+      <span class="prox-signo">?</span>
+      <span class="prox-cinta">Clasificado · Clasificado · Clasificado · Clasificado · Clasificado · Clasificado</span>
+    </div>
+    <div class="prox-texto">
+      <p class="etiqueta" id="proxEtiqueta"></p>
+      <h2 id="proxTitulo"></h2>
+      <p class="prox-desc" id="proxTexto"></p>
+      <p class="prox-tachado" aria-hidden="true"><span>████████</span> <span>██████</span> <span>█████████</span></p>
+      <a class="btn btn-solido" id="proxBtn" target="_blank" rel="noopener"><svg aria-hidden="true"><use href="#i-ig"/></svg><span id="proxBtnTxt"></span></a>
     </div>
   </div>
 </section>
@@ -302,7 +331,7 @@
     </div>
     <div>
       <h3>Tienda</h3>
-      <a href="#limitado">Limitado</a><a href="#catalogo">Catálogo</a><a href="#tallas">Guía de tallas</a><a href="#comprar">Cómo comprar</a><a href="#conoce">Conoce FOURLE4F</a>
+      <a href="#limitado">Limitado</a><a href="#catalogo">Catálogo</a><a href="#tallas">Guía de tallas</a><a href="#comprar">Cómo comprar</a><a href="#proximo">Próximamente</a><a href="#conoce">Conoce FOURLE4F</a>
     </div>
     <div>
       <h3>Contacto</h3>
@@ -336,7 +365,7 @@
 </aside>
 <div class="toast" id="toast" role="status"></div>
 
-<script src="js/config.js?v=2"></script>
-<script src="js/app.js?v=2"></script>
+<script src="js/config.js?v=3"></script>
+<script src="js/app.js?v=3"></script>
 </body>
 </html>

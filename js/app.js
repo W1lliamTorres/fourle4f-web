@@ -22,9 +22,22 @@ const redes = [
 const igUrl = ig ? redes[0].url : "#";
 const pagos = Array.isArray(CONFIG.pagos) ? CONFIG.pagos : [];
 const L = CONFIG.limitado || {};
-const productos = (CONFIG.productos || []).filter(p => p && p.id && Array.isArray(p.colores) && p.colores.length);
-const tallasDe = p => Object.keys(p.medidas || {});
+// Básicas por tela (tallas salen de su guía de medidas)
+const productos = (CONFIG.productos || []).filter(p => p && p.id && Array.isArray(p.colores) && p.colores.length)
+  .map(p => ({ ...p, tipoItem: "basica" }));
+// Prendas con foto (tallas propias, y opcionalmente por color)
+const disenos = (CONFIG.disenos || []).filter(d => d && d.id && d.mostrar !== false && Array.isArray(d.colores) && d.colores.length)
+  .map(d => ({ ...d, tipoItem: "diseno", fotos: (d.fotos || []).filter(Boolean) }));
+const tallasDe = (p, ci = 0) => p.tipoItem === "diseno"
+  ? ((p.colores[ci] && p.colores[ci].tallas) || p.tallas || [])
+  : Object.keys(p.medidas || {});
+const producto = id => disenos.find(d => d.id === id) || productos.find(p => p.id === id);
+const nombreItem = p => p.tipoItem === "diseno" ? `${p.tipo || ""} ${p.nombre}`.trim() : `${p.nombre} ${+p.gramaje} g`;
 const lineaLimitada = productos.find(p => p.limitada);
+const categorias = (CONFIG.categorias || []).filter(c => c && c.id && c.nombre);
+const catsDe = p => p.tipoItem === "basica"
+  ? ["basicas"].concat(p.limitada ? ["limitada"] : [])
+  : [p.categoria].concat(p.limitada ? ["limitada"] : []);
 
 /* ---------- Enlaces y textos generales ---------- */
 $("#anio").textContent = new Date().getFullYear();
@@ -107,10 +120,28 @@ $("#limTexto").textContent = limAgotado ? "Esta edición ya se acabó. Síguenos
 $("#limEdicion").textContent = L.edicion || "01";
 $("#limTela").textContent = lineaLimitada ? `${+lineaLimitada.gramaje} GSM` : "—";
 $("#limTallas").textContent = lineaLimitada ? tallasDe(lineaLimitada).join(" · ") : "—";
-if (lineaLimitada && !limAgotado) $("#limBtn").href = "#p-" + lineaLimitada.id;
 if (limAgotado){
   $("#sello").hidden = false;
-  const b = $("#limBtn"); b.textContent = "Avísame la próxima"; b.href = igUrl; b.target = "_blank"; b.rel = "noopener";
+  const b = $("#limBtn"); b.textContent = "Avísame la próxima"; b.href = igUrl; b.target = "_blank"; b.rel = "noopener"; b.removeAttribute("data-cat");
+}
+// Fotos de las prendas de edición limitada dentro del ticket
+const fotosLim = disenos.filter(d => d.limitada && d.fotos.length);
+if (fotosLim.length){
+  $("#limFotos").innerHTML = fotosLim.slice(0, 3).map(d =>
+    `<a href="#d-${esc(d.id)}" data-cat="limitada" data-ir="${esc(d.id)}" aria-label="Ver ${esc(nombreItem(d))}"><img src="${esc(d.fotos[0])}" alt="" loading="lazy" width="900" height="1200"></a>`).join("");
+} else $("#limFotos").remove();
+
+/* ---------- Próximamente ---------- */
+const P = CONFIG.proximo || {};
+if (P.activa){
+  $("#proxEtiqueta").textContent = P.etiqueta || "";
+  $("#proxTitulo").textContent = P.titulo || "";
+  $("#proxTexto").textContent = P.texto || "";
+  $("#proxBtnTxt").textContent = P.boton || "Instagram";
+  $("#proxBtn").href = igUrl;
+  $("#proximo").hidden = false;
+} else {
+  $$('a[href="#proximo"]').forEach(a => a.remove());
 }
 
 /* ---------- Catálogo ---------- */
@@ -126,9 +157,53 @@ function fotoHTML(p, c){
   return h;
 }
 
-$("#productos").innerHTML = productos.map(p => {
+const radiosTallas = (p, sin, ci = 0) => tallasDe(p, ci).map((t,i) =>
+  `<label><input type="radio" name="t-${esc(p.id)}" value="${esc(t)}" ${i===0?"checked":""} ${sin?"disabled":""}><span>${esc(t)}</span></label>`).join("");
+
+function galeriaHTML(d){
+  const alt = esc(nombreItem(d));
+  if (!d.fotos.length) return `<div class="foto">${silueta(d.colores[0].hex)}<span class="aviso">Foto próximamente</span></div>`;
+  const slides = d.fotos.map((f,i) => `<img src="${esc(f)}" alt="${alt}${d.fotos.length > 1 ? `, foto ${i+1} de ${d.fotos.length}` : ""}" loading="lazy" width="900" height="1200">`).join("");
+  if (d.fotos.length === 1) return `<div class="foto foto-real">${slides}</div>`;
+  return `<div class="foto foto-real galeria" data-gal="${esc(d.id)}">
+    <div class="pista" tabindex="0" aria-label="Fotos de ${alt}. Desliza para ver más.">${slides}</div>
+    <button type="button" class="gal-flecha ant" data-galmov="-1" aria-label="Foto anterior">‹</button>
+    <button type="button" class="gal-flecha sig" data-galmov="1" aria-label="Foto siguiente">›</button>
+    <div class="puntos" aria-hidden="true">${d.fotos.map((_,i) => `<i class="${i===0?"on":""}"></i>`).join("")}</div>
+  </div>`;
+}
+
+const tarjetaDiseno = d => {
+  const sin = !disponible(d), pid = esc(d.id);
+  return `<article class="prod prod-diseno${d.limitada ? " es-limitada" : ""}" id="d-${pid}" data-cats="${esc(catsDe(d).join(" "))}">
+    ${galeriaHTML(d)}
+    <div class="insignias">
+      ${d.limitada ? `<span class="insignia oro">Edición limitada</span>` : ""}
+      <span class="insignia">${esc((categorias.find(c => c.id === d.categoria) || {}).nombre || d.tipo || "")}</span>
+      ${sin ? `<span class="insignia agot">Agotado</span>` : ""}
+    </div>
+    <h3><small>${esc(d.tipo || "")}</small>${esc(d.nombre)}</h3>
+    <div class="meta"><span class="color-nombre" data-cnom="${pid}">${esc(d.colores[0].nombre)}</span><span class="precio">${cop(d.precio)}</span></div>
+    <fieldset class="colores">
+      <legend class="sr">Color de ${esc(nombreItem(d))}</legend>
+      ${d.colores.map((c,i) => `<label title="${esc(c.nombre)}"><input type="radio" name="c-${pid}" value="${i}" ${i===0?"checked":""} ${sin?"disabled":""} data-color="${pid}"><span style="--c:${hexValido(c.hex)}"></span><b class="sr">${esc(c.nombre)}</b></label>`).join("")}
+    </fieldset>
+    <fieldset class="tallas" data-tallas="${pid}">
+      <legend class="sr">Talla de ${esc(nombreItem(d))}</legend>
+      ${radiosTallas(d, sin)}
+    </fieldset>
+    <div class="acciones-prod">
+      <button class="btn ${sin ? "btn-linea" : "btn-solido"}" type="button" data-add="${pid}" ${sin?"disabled":""}>${sin ? "Agotado" : "Añadir a la bolsa"}</button>
+      <a class="ver-guia" target="_blank" rel="noopener" href="${esc(wa(`Hola FOURLE4F, quiero asesoría de talla para ${nombreItem(d)}. Mido ___ cm y peso ___ kg.`))}">Asesoría de talla</a>
+    </div>
+  </article>`;
+};
+
+// Orden: limitadas primero, luego el resto de prendas con foto y al final las básicas por tela
+const ordenDisenos = [...disenos.filter(d => d.limitada), ...disenos.filter(d => !d.limitada)];
+$("#productos").innerHTML = ordenDisenos.map(tarjetaDiseno).join("") + productos.map(p => {
   const sin = !disponible(p), pid = esc(p.id);
-  return `<article class="prod${p.limitada ? " es-limitada" : ""}" id="p-${pid}">
+  return `<article class="prod${p.limitada ? " es-limitada" : ""}" id="p-${pid}" data-cats="${esc(catsDe(p).join(" "))}">
     <div class="foto" data-foto="${pid}">${fotoHTML(p, p.colores[0])}</div>
     <div class="insignias">
       ${p.limitada ? `<span class="insignia oro">Edición limitada</span>` : ""}
@@ -156,12 +231,74 @@ $("#productos").innerHTML = productos.map(p => {
 document.addEventListener("change", e => {
   const r = e.target.closest("[data-color]");
   if (!r) return;
-  const p = productos.find(x => x.id === r.dataset.color), c = p && p.colores[+r.value];
+  const p = producto(r.dataset.color), c = p && p.colores[+r.value];
   if (!c) return;
-  const caja = document.querySelector(`[data-foto="${CSS.escape(p.id)}"]`);
+  const id = CSS.escape(p.id);
+  document.querySelector(`[data-cnom="${id}"]`).textContent = c.nombre;
+  if (p.tipoItem === "diseno"){
+    // Si el color tiene tallas propias, se actualizan las opciones de talla
+    const fs = document.querySelector(`[data-tallas="${id}"]`);
+    const leyenda = fs.querySelector("legend").outerHTML;
+    fs.innerHTML = leyenda + radiosTallas(p, !disponible(p), +r.value);
+    return;
+  }
+  const caja = document.querySelector(`[data-foto="${id}"]`);
   caja.classList.remove("ver-espalda");
   caja.innerHTML = fotoHTML(p, c);
-  document.querySelector(`[data-cnom="${CSS.escape(p.id)}"]`).textContent = c.nombre;
+});
+
+/* Galerías: flechas y puntos */
+function irFoto(gal, paso){
+  const pista = gal.querySelector(".pista"), n = pista.children.length;
+  const i = Math.round(pista.scrollLeft / pista.clientWidth);
+  pista.scrollTo({ left: ((i + paso + n) % n) * pista.clientWidth, behavior: matchMedia("(prefers-reduced-motion: reduce)").matches ? "auto" : "smooth" });
+}
+$$(".galeria .pista").forEach(pista => pista.addEventListener("scroll", () => {
+  const i = Math.round(pista.scrollLeft / pista.clientWidth);
+  pista.parentElement.querySelectorAll(".puntos i").forEach((p,k) => p.classList.toggle("on", k === i));
+}, { passive: true }));
+
+/* ---------- Filtros del catálogo y menú desplegable ---------- */
+const todos = [...ordenDisenos, ...productos];
+const catsConItems = categorias.filter(c => todos.some(p => catsDe(p).includes(c.id)));
+const opciones = [{ id: "todo", nombre: "Ver todo" }, ...catsConItems];
+$("#filtros").innerHTML = opciones.map(c =>
+  `<button type="button" class="filtro" data-cat="${esc(c.id)}" aria-pressed="${c.id === "todo"}">${esc(c.id === "todo" ? "Todo" : c.nombre)}</button>`).join("");
+$("#subCat").innerHTML = opciones.map(c =>
+  `<li><a href="#catalogo" data-cat="${esc(c.id)}">${esc(c.nombre)}</a></li>`).join("");
+if (CONFIG.avisoOriginales){ $("#avisoOriginales").textContent = CONFIG.avisoOriginales; $("#avisoOriginales").hidden = false; }
+
+function filtrar(cat){
+  if (!opciones.some(o => o.id === cat)) cat = "todo";
+  let n = 0;
+  $$("#productos .prod").forEach(el => {
+    const ver = cat === "todo" || el.dataset.cats.split(" ").includes(cat);
+    el.hidden = !ver; if (ver) n++;
+  });
+  $$("#filtros .filtro").forEach(b => b.setAttribute("aria-pressed", String(b.dataset.cat === cat)));
+  $$("#subCat a").forEach(a => a.toggleAttribute("aria-current", a.dataset.cat === cat));
+  const nom = (opciones.find(o => o.id === cat) || {}).nombre;
+  $("#conteoCat").textContent = `${nom}: ${n} ${n === 1 ? "prenda" : "prendas"}`;
+}
+filtrar("todo");
+
+const menuCat = $("#menuCat"), btnCat = $("#btnCat");
+const abrirCat = abierto => { menuCat.classList.toggle("abierto", abierto); btnCat.setAttribute("aria-expanded", String(abierto)); };
+btnCat.addEventListener("click", () => abrirCat(!menuCat.classList.contains("abierto")));
+document.addEventListener("click", e => {
+  if (!menuCat.contains(e.target)) abrirCat(false);
+  const g = e.target.closest("[data-galmov]");
+  if (g){ irFoto(g.closest(".galeria"), +g.dataset.galmov); return; }
+  const f = e.target.closest("[data-cat]");
+  if (!f) return;
+  filtrar(f.dataset.cat);
+  abrirCat(false);
+  if (f.dataset.ir){
+    // Desde el ticket: ir a la tarjeta de esa prenda
+    e.preventDefault();
+    const t = document.getElementById("d-" + f.dataset.ir);
+    if (t) t.scrollIntoView({ behavior: matchMedia("(prefers-reduced-motion: reduce)").matches ? "auto" : "smooth", block: "start" });
+  }
 });
 
 /* ---------- Guía de tallas (pestañas por línea) ---------- */
@@ -232,14 +369,15 @@ try { bolsa = JSON.parse(localStorage.getItem(CLAVE) || "[]"); if (!Array.isArra
 
 // Precios y nombres siempre salen de config.js. Se descartan prendas que ya no
 // existen, se agotaron o ya no tienen ese color o esa talla.
-const producto = id => productos.find(p => p.id === id);
 bolsa = bolsa.filter(i => {
   const p = producto(i.id);
-  return p && disponible(p) && tallasDe(p).includes(i.talla) && p.colores.some(c => c.nombre === i.color) && Number.isInteger(i.qty) && i.qty > 0;
+  if (!p || !disponible(p) || !Number.isInteger(i.qty) || i.qty < 1) return false;
+  const ci = p.colores.findIndex(c => c.nombre === i.color);
+  return ci >= 0 && tallasDe(p, ci).includes(i.talla);
 }).map(i => ({ id:i.id, color:i.color, talla:i.talla, qty:Math.min(i.qty, 20) }));
 
 const guardar = () => { try { localStorage.setItem(CLAVE, JSON.stringify(bolsa)); } catch(e){} };
-const lineas = () => bolsa.map(i => { const p = producto(i.id); return { ...i, nombre:p.nombre, gramaje:p.gramaje, precio:p.precio, subtotal:p.precio * i.qty }; });
+const lineas = () => bolsa.map(i => { const p = producto(i.id); return { ...i, nombre:nombreItem(p), precio:p.precio, subtotal:p.precio * i.qty }; });
 const totalBolsa = () => lineas().reduce((s,l) => s + l.subtotal, 0);
 
 $("#cMunicipio").innerHTML = `<option value="">Escoge…</option>` + CONFIG.municipios.map(m => `<option>${esc(m)}</option>`).join("");
@@ -257,7 +395,7 @@ function pintarBolsa(){
   $("#total").textContent = cop(totalBolsa());
   $("#items").innerHTML = ls.length ? ls.map((l,k) => `
     <div class="item">
-      <div><strong>${esc(l.nombre)} ${+l.gramaje} g</strong><br><small>${esc(l.color)}, talla ${esc(l.talla)}</small></div>
+      <div><strong>${esc(l.nombre)}</strong><br><small>${esc(l.color)}, talla ${esc(l.talla)}</small></div>
       <div>${cop(l.subtotal)}</div>
       <div class="q"><button type="button" aria-label="Quitar una" data-q="${k}" data-d="-1">−</button><span>${l.qty}</span><button type="button" aria-label="Añadir una" data-q="${k}" data-d="1">+</button></div>
       <button type="button" class="quitar" data-x="${k}">Quitar</button>
@@ -313,7 +451,7 @@ document.addEventListener("click", e => {
     if (!talla) return;
     const ex = bolsa.find(i => i.id === p.id && i.talla === talla && i.color === color);
     if (ex) ex.qty = Math.min(ex.qty + 1, 20); else bolsa.push({ id:p.id, color, talla, qty:1 });
-    guardar(); pintarBolsa(); toast(`Añadida: ${p.nombre} ${color}, talla ${talla}`);
+    guardar(); pintarBolsa(); toast(`Añadida: ${nombreItem(p)} ${color}, talla ${talla}`);
     return;
   }
   const q = e.target.closest("[data-q]");
@@ -334,6 +472,7 @@ $("#velo").addEventListener("click", cerrar);
 document.addEventListener("keydown", e => {
   if (e.key !== "Escape") return;
   if (document.body.classList.contains("bolsa-abierta")) cerrar();
+  else if (menuCat.classList.contains("abierto")){ abrirCat(false); btnCat.focus(); }
   else if (menu.classList.contains("abierto")){ cerrarMenu(); btnMenu.focus(); }
 });
 
@@ -362,7 +501,7 @@ function validar(){
   $("#errPedido").textContent = ""; return true;
 }
 function mensajeWhatsApp(p){
-  const ls = p.items.map(l => `• ${l.qty} x ${l.nombre} ${l.gramaje} g, ${l.color}, talla ${l.talla}: ${cop(l.subtotal)}`).join("\n");
+  const ls = p.items.map(l => `• ${l.qty} x ${l.nombre}, ${l.color}, talla ${l.talla}: ${cop(l.subtotal)}`).join("\n");
   return `Hola FOURLE4F, quiero hacer este pedido:\n\n${ls}\n\nTotal: ${cop(p.total)}\nNombre: ${p.nombre}\nEntrega en: ${p.municipio}` +
     (p.pago ? `\nPago: ${p.pago}` : "") + `\n\n¿Está disponible?`;
 }

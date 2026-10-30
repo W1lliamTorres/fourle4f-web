@@ -388,3 +388,101 @@ body.bolsa-abierta .bolsa{transform:none;visibility:visible;transition:transform
 .toast.on{transform:translate(-50%,0);opacity:1;visibility:visible}
 .wa-flot{position:fixed;right:16px;bottom:16px;width:56px;height:56px;border-radius:50%;background:var(--verde);display:grid;place-items:center;z-index:30;box-shadow:0 6px 24px rgba(0,0,0,.5)}
 .wa-flot svg{width:28px;height:28px;color:#fff}
+
+/* ===== Catálogo v3: desplegable, filtros, tarjetas por diseño, galería ===== */
+/* Menú "Catálogo" con subsecciones */
+.menu-cat{position:relative}
+.menu-cat-btn{display:flex;align-items:center;gap:6px;width:100%;background:none;border:0;padding:0;cursor:pointer;color:var(--crudo-2);
+  font-family:var(--boton);font-stretch:125%;font-weight:600;font-size:11px;letter-spacing:.14em;text-transform:uppercase}
+.menu-cat-btn:hover,.menu-cat.abierto .menu-cat-btn{color:var(--crudo)}
+.menu-cat-btn svg{width:12px;height:12px;fill:none;stroke:currentColor;stroke-width:1.6;transition:transform .2s}
+.menu-cat.abierto .menu-cat-btn svg{transform:rotate(180deg)}
+.submenu{list-style:none;margin:0;padding:0;display:none}
+.menu-cat.abierto .submenu{display:block}
+.submenu a{display:block}
+.submenu a[aria-current]{color:var(--oro)}
+nav.menu.abierto .menu-cat-btn{padding:14px 0;border-bottom:1px solid var(--linea);justify-content:space-between}
+nav.menu.abierto .submenu{padding:4px 0 8px 14px;border-bottom:1px solid var(--linea)}
+nav.menu.abierto .submenu a{padding:10px 0;border:0;font-size:11px}
+@media(min-width:1000px){
+  .menu-cat{display:flex;align-items:center}
+  .submenu{position:absolute;top:calc(100% + 18px);left:-18px;min-width:210px;background:rgba(8,8,7,.97);border:1px solid var(--oro-linea);border-radius:2px;padding:8px 0;box-shadow:0 18px 40px rgba(0,0,0,.5);z-index:30}
+  .submenu::before{content:"";position:absolute;left:0;right:0;top:-20px;height:20px}
+  .menu-cat:hover .submenu,.menu-cat:focus-within .submenu{display:block}
+  .submenu a{padding:10px 18px}
+  .submenu a:hover{background:rgba(201,165,78,.08)}
+}
+
+/* Filtros del catálogo */
+.filtros-barra{display:flex;flex-wrap:wrap;align-items:center;justify-content:space-between;gap:14px 24px;margin:-12px 0 30px}
+.filtros{display:flex;gap:8px;overflow-x:auto;scrollbar-width:none;padding:2px;margin:-2px}
+.filtros::-webkit-scrollbar{display:none}
+.filtro{flex:none;background:none;border:1px solid var(--linea);border-radius:999px;padding:9px 16px;cursor:pointer;color:var(--crudo-2);
+  font-family:var(--boton);font-stretch:125%;font-weight:700;font-size:11px;letter-spacing:.1em;text-transform:uppercase}
+.filtro:hover{border-color:var(--oro-linea);color:var(--crudo)}
+.filtro[aria-pressed="true"]{background:var(--crudo);border-color:var(--crudo);color:#0b0b0a}
+.originales{margin:0;font-size:13px;color:var(--gris);display:flex;align-items:center;gap:8px}
+.originales::before{content:"";width:7px;height:7px;border-radius:50%;background:var(--oro);flex:none}
+.prod[hidden]{display:none}
+
+/* Tarjetas: mismo formato vertical para todas */
+.prod .foto{aspect-ratio:3/4}
+.prod h3 small{display:block;font-family:var(--boton);font-stretch:125%;font-size:10px;font-weight:600;letter-spacing:.16em;color:var(--gris);margin-bottom:3px}
+.prod-diseno .meta{margin-top:auto}
+.prod .foto-real img{object-fit:cover;transition:transform .5s}
+@media(hover:hover){.prod .foto-real:not(.galeria):hover img{transform:scale(1.03)}}
+
+/* Galería deslizable */
+.galeria .pista{position:absolute;inset:0;display:flex;overflow-x:auto;scroll-snap-type:x mandatory;scrollbar-width:none}
+.galeria .pista::-webkit-scrollbar{display:none}
+.galeria .pista img{position:relative;flex:0 0 100%;scroll-snap-align:start}
+.gal-flecha{position:absolute;top:50%;transform:translateY(-50%);width:34px;height:34px;border-radius:50%;border:1px solid var(--linea);background:rgba(8,8,7,.7);color:var(--crudo);font-size:20px;line-height:1;cursor:pointer;opacity:0;transition:opacity .2s}
+.gal-flecha.ant{left:8px}.gal-flecha.sig{right:8px}
+.galeria:hover .gal-flecha,.gal-flecha:focus-visible{opacity:1}
+@media(hover:none){.gal-flecha{display:none}}
+.puntos{position:absolute;bottom:10px;left:0;right:0;display:flex;justify-content:center;gap:6px;pointer-events:none}
+.puntos i{width:6px;height:6px;border-radius:50%;background:rgba(237,230,214,.35)}
+.puntos i.on{background:var(--crudo)}
+
+/* Fotos dentro del ticket de Edición limitada */
+.lim-fotos{display:flex;gap:10px;margin:-6px 0 26px}
+.lim-fotos a{display:block;width:92px;border:1px solid var(--oro-linea);border-radius:3px;overflow:hidden;transition:border-color .2s,transform .2s}
+.lim-fotos a:hover{border-color:var(--oro);transform:translateY(-2px)}
+.lim-fotos img{width:100%;height:auto;aspect-ratio:3/4;object-fit:cover}
+@media(min-width:720px){.lim-fotos a{width:110px}}
+
+/* ===== Próximamente (sección misteriosa) ===== */
+.proximo{position:relative;overflow:hidden;padding:110px 0;background:#050505;border-bottom:1px solid var(--linea);isolation:isolate}
+.proximo[hidden]{display:none}
+.prox-ruido{position:absolute;inset:-50%;z-index:-1;opacity:.07;pointer-events:none;
+  background-image:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='160' height='160'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='.85' numOctaves='3' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='160' height='160' filter='url(%23n)'/%3E%3C/svg%3E")}
+.proximo::after{content:"";position:absolute;inset:0;z-index:-1;background:radial-gradient(45% 55% at 30% 50%,rgba(11,93,59,.22),transparent 70%)}
+.prox-in{display:grid;gap:48px;align-items:center}
+@media(min-width:900px){.prox-in{grid-template-columns:.9fr 1.1fr;gap:72px}}
+.prox-visual{position:relative;max-width:360px;justify-self:center;width:100%}
+.prox-visual svg{display:block;width:100%;fill:#121210;stroke:var(--oro-linea);stroke-width:1.5;filter:blur(1.5px)}
+.prox-signo{position:absolute;inset:0;display:grid;place-items:center;font-family:var(--brocha);font-size:clamp(90px,16vw,150px);color:var(--oro);text-shadow:0 0 40px rgba(201,165,78,.35)}
+.prox-cinta{position:absolute;left:-14%;right:-14%;top:58%;transform:rotate(-8deg);background:var(--oro);color:#0b0b0a;white-space:nowrap;overflow:hidden;padding:7px 0;
+  font-family:var(--boton);font-stretch:125%;font-weight:800;font-size:11px;letter-spacing:.3em;text-transform:uppercase;text-align:center}
+.prox-texto h2{font-size:clamp(30px,5vw,58px);margin:14px 0 18px}
+.prox-desc{color:var(--crudo-2);max-width:46ch}
+.prox-tachado{display:flex;flex-wrap:wrap;gap:8px;margin:4px 0 30px;color:#1d1d1a;letter-spacing:-2px;user-select:none}
+.prox-tachado span{background:#1d1d1a;border-radius:2px;line-height:1}
+
+/* Catálogo en celular: 2 columnas compactas */
+@media(max-width:619px){
+  .grid-prod{grid-template-columns:1fr 1fr;gap:28px 12px}
+  .prod .insignias{gap:4px;margin-top:10px}
+  .prod .insignia{font-size:8.5px;padding:3px 6px;letter-spacing:.08em}
+  .prod h3{font-size:14px;margin:8px 0 4px}
+  .prod h3 small{font-size:8.5px}
+  .prod .detalle{font-size:12.5px}
+  .prod .meta{flex-wrap:wrap;gap:0 6px;font-size:13px}
+  .colores{gap:6px;margin-top:8px}
+  .colores span{width:24px;height:24px}
+  .tallas{gap:4px;margin:10px 0 12px}
+  .tallas span{padding:8px 0;font-size:11px}
+  .prod .btn{min-height:44px;padding:0 6px;font-size:10px;letter-spacing:.06em}
+  .ver-guia{font-size:12px}
+  .filtros-barra{margin-top:-20px}
+}
