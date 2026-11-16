@@ -72,7 +72,7 @@ Camisetas sin estampado de 270 g, 100% algodón, en Blanco, Negro y Gris, tallas
 {
   id: "basicas-270", nombre: "Básicas", gramaje: 270,
   detalle: "Camiseta sin estampado, 100% algodón.",
-  precio: 89900,
+  precio: 79500,
   limitada: false, agotado: false,
   medidas: { S:{ancho:53.5, largo:67.5}, M:{ancho:57, largo:69}, L:{ancho:57, largo:72} },
   colores: [
@@ -158,8 +158,6 @@ El sitio en fourle4f.com se actualiza solo desde GitHub: cada vez que se suben c
 |---|---|
 | `js/config.js` → `whatsapp` | Número definitivo (hoy está el temporal 312 218 1447) |
 | `js/config.js` → `redes.tiktok` y `redes.facebook` | Cuando crees las cuentas |
-| `js/config.js` → `disenos` | Cargar los productos reales (la lista está vacía) |
-| `js/config.js` → `productos` → `precio` | Precio real de las Básicas (hoy: $89.900) |
 | `js/config.js` → `productos` → `medidas` | Confirmar con el proveedor que M y L tienen el mismo ancho (57 cm) |
 | `index.html` → `og:url` y `og:image` | Tu dominio |
 | `img/` | Logo final y fotos de producto |
