@@ -205,10 +205,10 @@ const tarjetaDiseno = d => {
   </article>`;
 };
 
-// Orden: limitadas primero, luego el resto de prendas con foto y al final las básicas
+// Orden: primero las básicas, luego las limitadas y después el resto de prendas con foto
 const ordenDisenos = [...disenos.filter(d => d.limitada), ...disenos.filter(d => !d.limitada)];
 $("#productos").insertAdjacentHTML("afterend", `<p class="vacia cat-vacia" id="catVacia" hidden>Muy pronto: estamos cargando los productos de esta sección. Escríbenos por WhatsApp si buscas algo en especial.</p>`);
-$("#productos").innerHTML = ordenDisenos.map(tarjetaDiseno).join("") + productos.map(p => {
+$("#productos").innerHTML = productos.map(p => {
   const sin = !disponible(p), pid = esc(p.id);
   return `<article class="prod${p.limitada ? " es-limitada" : ""}" id="p-${pid}" data-cats="${esc(catsDe(p).join(" "))}">
     <div class="foto" data-foto="${pid}">${fotoHTML(p, p.colores[0])}</div>
@@ -233,7 +233,7 @@ $("#productos").innerHTML = ordenDisenos.map(tarjetaDiseno).join("") + productos
       <a class="ver-guia" href="#tallas" data-guia="${pid}">Ver guía de tallas</a>
     </div>
   </article>`;
-}).join("");
+}).join("") + ordenDisenos.map(tarjetaDiseno).join("");
 
 document.addEventListener("change", e => {
   const r = e.target.closest("[data-color]");
