@@ -495,3 +495,9 @@ nav.menu.abierto .submenu a{padding:10px 0;border:0;font-size:11px}
 .aviso-fotos p{margin:0;color:var(--crudo-2);font-size:15px;max-width:60ch}
 .aviso-fotos .btn{justify-self:start}
 @media(min-width:860px){.aviso-fotos{grid-template-columns:1fr auto;padding:22px 28px}}
+
+/* ===== Talla única y categoría sin productos ===== */
+.talla-unica{display:block;flex:1;text-align:center;border:1px dashed var(--linea);border-radius:2px;padding:9px 0;color:var(--crudo-2);
+  font-family:var(--boton);font-stretch:125%;font-weight:600;font-size:12px;letter-spacing:.1em;text-transform:uppercase}
+.cat-vacia{text-align:center}
+
