@@ -123,6 +123,11 @@ const CONFIG = {
   // { id:"gorra-ejemplo", nombre:"Ejemplo", tipo:"Gorra", categoria:"gorras", mostrar:true, precio:85000, tallas:[], colores:[{nombre:"Negro",hex:"#151515"}], fotos:["img/catalogo/gorra-ejemplo.jpg"] },
   // ===================================================================
   disenos: [
+    // CAMISETAS ESTAMPADAS (Hombre / Unisex). Precio 99900 = SUPUESTO: cambiar por el real de cada una.
+    { id:"estampada-01", nombre:"Estampada 01", tipo:"Camiseta", categoria:"hombre", mostrar:true, precio:99900, tallas:["M","L"], colores:[{nombre:"Negro",hex:"#151515"}], fotos:["img/catalogo/estampada-01-1.jpg","img/catalogo/estampada-01-2.jpg"] },
+    { id:"estampada-02", nombre:"Estampada 02", tipo:"Camiseta", categoria:"hombre", mostrar:true, precio:99900, tallas:["M","L"], colores:[{nombre:"Café",hex:"#6B5E4E"}], fotos:["img/catalogo/estampada-02-1.jpg","img/catalogo/estampada-02-2.jpg"] },
+    { id:"estampada-03", nombre:"Estampada 03", tipo:"Camiseta", categoria:"hombre", mostrar:true, precio:99900, tallas:["M"], colores:[{nombre:"Arena",hex:"#B8AE9C"}], fotos:["img/catalogo/estampada-03-1.jpg","img/catalogo/estampada-03-2.jpg"] },
+    { id:"estampada-04", nombre:"Estampada 04", tipo:"Camiseta", categoria:"hombre", mostrar:true, precio:99900, tallas:["XL"], colores:[{nombre:"Gris",hex:"#8C8A86"}], fotos:["img/catalogo/estampada-04-1.jpg","img/catalogo/estampada-04-2.jpg"] },
     // GORRAS. Precios SUPUESTO de referencia (75000 / 85000 / 95000): cambiar por el real de cada una.
     { id:"gorra-01", nombre:"Gorra 01", tipo:"Gorra", categoria:"gorras", mostrar:true, precio:85000, tallas:[], colores:[{nombre:"Negro",hex:"#151515"}], fotos:["img/catalogo/gorra-01-1.jpg","img/catalogo/gorra-01-2.jpg"] },
     { id:"gorra-02", nombre:"Gorra 02", tipo:"Gorra", categoria:"gorras", mostrar:true, precio:95000, tallas:[], colores:[{nombre:"Negro",hex:"#151515"}], fotos:["img/catalogo/gorra-02-1.jpg","img/catalogo/gorra-02-2.jpg"] },
@@ -184,11 +189,11 @@ const CONFIG = {
       detalle: "Camiseta sin estampado, 100% algodón.",
       precio: 89900,                                    // SUPUESTO
       limitada: false, agotado: false,
-      medidas: { S:{ancho:53.5, largo:67.5}, M:{ancho:57, largo:69}, L:{ancho:57, largo:72}, XL:null },  // SUPUESTO: verificar M y L (mismo ancho) y medir XL
+      medidas: { S:{ancho:53.5, largo:67.5}, M:{ancho:57, largo:69}, L:{ancho:57, largo:72} },  // SUPUESTO: verificar M y L (mismo ancho). Para vender XL agrega  XL:{ancho:__, largo:__}
       colores: [
-        { nombre:"Blanco", hex:"#EEEAE2", foto:"", fotoEspalda:"" },
-        { nombre:"Negro",  hex:"#151515", foto:"", fotoEspalda:"" },
-        { nombre:"Gris",   hex:"#8C8C8A", foto:"", fotoEspalda:"" }
+        { nombre:"Negro",  hex:"#151515", foto:"img/catalogo/basica-negra-frente.jpg",  fotoEspalda:"img/catalogo/basica-negra-espalda.jpg" },
+        { nombre:"Blanco", hex:"#EEEAE2", foto:"img/catalogo/basica-blanca-frente.jpg", fotoEspalda:"img/catalogo/basica-blanca-espalda.jpg" },
+        { nombre:"Gris",   hex:"#8C8C8A", foto:"img/catalogo/basica-gris-frente.jpg",   fotoEspalda:"img/catalogo/basica-gris-espalda.jpg" }
       ]
     }
   ],

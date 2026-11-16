@@ -66,7 +66,7 @@ La lista empieza vacía. Dentro de `config.js` hay dos líneas de ejemplo (una c
 
 ## 3B. Básicas (`productos`)
 
-Camisetas sin estampado de 270 g, 100% algodón, en Blanco, Negro y Gris, tallas S, M, L y XL. Son una tarjeta del catálogo (filtro "Básicas") y una pestaña de la guía de tallas:
+Camisetas sin estampado de 270 g, 100% algodón, en Blanco, Negro y Gris, tallas S, M y L. Son una tarjeta del catálogo (filtro "Básicas") y una pestaña de la guía de tallas:
 
 ```js
 {
@@ -74,7 +74,7 @@ Camisetas sin estampado de 270 g, 100% algodón, en Blanco, Negro y Gris, tallas
   detalle: "Camiseta sin estampado, 100% algodón.",
   precio: 89900,
   limitada: false, agotado: false,
-  medidas: { S:{ancho:53.5, largo:67.5}, M:{ancho:57, largo:69}, L:{ancho:57, largo:72}, XL:null },
+  medidas: { S:{ancho:53.5, largo:67.5}, M:{ancho:57, largo:69}, L:{ancho:57, largo:72} },
   colores: [
     { nombre:"Blanco", hex:"#EEEAE2", foto:"", fotoEspalda:"" },
     { nombre:"Negro",  hex:"#151515", foto:"", fotoEspalda:"" },
@@ -83,7 +83,7 @@ Camisetas sin estampado de 270 g, 100% algodón, en Blanco, Negro y Gris, tallas
 },
 ```
 
-- **`medidas`:** es la guía de tallas, en cm. Las tallas que el cliente puede escoger salen de aquí: para quitar una talla, borra su parte (ej. `L:{...}`); para agregar una, añádela (ej. `XL:{ancho:60, largo:74}`). Si una talla se vende pero aún no tienes sus medidas, ponla en `null` (hoy `XL:null`): se puede pedir y la guía dice "Por confirmar". Los decimales van con punto: `53.5`.
+- **`medidas`:** es la guía de tallas, en cm. Las tallas que el cliente puede escoger salen de aquí: para quitar una talla, borra su parte (ej. `L:{...}`); para agregar una, añádela (ej. `XL:{ancho:60, largo:74}`). Si una talla se vende pero aún no tienes sus medidas, ponla en `null`: se puede pedir y la guía dice "Por confirmar". Los decimales van con punto: `53.5`.
 - **Agregar un color:** copia una línea `{ nombre:..., hex:..., foto:"", fotoEspalda:"" }` dentro de `colores`. El `hex` es el color del círculo y de la silueta mientras no hay foto; puedes buscar "selector de color" en Google para encontrarlo.
 - **Agregar otra línea:** copia un bloque completo `{ ... },` y cambia el `id` (único, en minúsculas, sin espacios ni tildes).
 - **Marcarla agotada:** `agotado: true`. Se sigue viendo, pero no se puede pedir.
@@ -160,7 +160,7 @@ El sitio en fourle4f.com se actualiza solo desde GitHub: cada vez que se suben c
 | `js/config.js` → `redes.tiktok` y `redes.facebook` | Cuando crees las cuentas |
 | `js/config.js` → `disenos` | Cargar los productos reales (la lista está vacía) |
 | `js/config.js` → `productos` → `precio` | Precio real de las Básicas (hoy: $89.900) |
-| `js/config.js` → `productos` → `medidas` | Medir la talla XL y confirmar con el proveedor que M y L tienen el mismo ancho (57 cm) |
+| `js/config.js` → `productos` → `medidas` | Confirmar con el proveedor que M y L tienen el mismo ancho (57 cm) |
 | `index.html` → `og:url` y `og:image` | Tu dominio |
 | `img/` | Logo final y fotos de producto |
 
