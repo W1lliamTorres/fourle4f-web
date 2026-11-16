@@ -71,16 +71,20 @@ const CONFIG = {
   pagos: ["Nequi", "Llaves bancarias", "Transferencia Bancolombia"],
 
   // ===================================================================
-  // SUBSECCIONES DEL CATÁLOGO (aparecen en el menú desplegable "Catálogo").
-  // "limitada" junta todo lo marcado con limitada:true; "basicas" son las
-  // camisetas lisas por línea de tela (lista "productos", más abajo).
+  // SUBSECCIONES DEL CATÁLOGO (aparecen en los filtros y en el menú
+  // desplegable "Catálogo"). Se muestran todas, aunque todavía no tengan
+  // prendas. "limitada" junta todo lo marcado con limitada:true; "basicas"
+  // son las camisetas lisas (lista "productos", más abajo).
   // ===================================================================
   categorias: [
-    { id: "hombre",   nombre: "Hombre / Unisex" },
-    { id: "mujer",    nombre: "Mujer" },
-    { id: "hoodies",  nombre: "Hoodies" },
-    { id: "limitada", nombre: "Edición limitada" },
-    { id: "basicas",  nombre: "Básicas por tela" }
+    { id: "hombre",        nombre: "Hombre / Unisex" },
+    { id: "hoodies",       nombre: "Hoodies" },
+    { id: "limitada",      nombre: "Edición limitada" },
+    { id: "basicas",       nombre: "Básicas" },
+    { id: "gorras",        nombre: "Gorras" },
+    { id: "ropa-interior", nombre: "Ropa interior hombres" },
+    { id: "calcetines",    nombre: "Calcetines" },
+    { id: "billeteras",    nombre: "Billeteras / Tarjeteros" }
   ],
 
   // Aviso que sale arriba del catálogo. "" para quitarlo.
@@ -96,120 +100,94 @@ const CONFIG = {
   },
 
   // ===================================================================
-  // PRENDAS CON FOTO (una tarjeta por diseño).
-  // Para agregar una: copia una línea completa { ... }, pégala debajo y cámbiala.
+  // PRENDAS CON FOTO (una tarjeta por producto).
+  // Para agregar uno: copia la línea de ejemplo de abajo, pégala dentro de
+  // los corchetes [ ], quítale las dos barras // del inicio y cámbiala.
   //   id:        único, minúsculas, sin espacios ni tildes
   //   nombre:    lo que ve el cliente
-  //   tipo:      "Camiseta", "Polo", "Hoodie"...
-  //   categoria: "hombre", "mujer" o "hoodies" (ver categorias)
+  //   tipo:      "Camiseta", "Polo", "Hoodie", "Gorra", "Bóxer", "Calcetines", "Billetera"...
+  //   categoria: "hombre", "hoodies", "gorras", "ropa-interior", "calcetines" o "billeteras"
   //   limitada:  true = aparece también en Edición limitada, con borde dorado
-  //   mostrar:   false = la prenda NO se ve en la página (queda guardada)
+  //   mostrar:   false = el producto NO se ve en la página (queda guardado)
   //   precio:    en pesos, sin puntos
-  //   tallas:    tallas disponibles. Un color puede tener las suyas: { nombre:"Negro", hex:"#111", tallas:["M","XL"] }
-  //   colores:   colores de la foto
-  //   fotos:     una o varias fotos (img/catalogo/...). Con varias, se deslizan.
-  //   agotado:   true para mostrarla sin poder pedirla
+  //   tallas:    tallas disponibles, ej. ["S","M","L","XL"].
+  //              Vacío [] = TALLA ÚNICA (gorras, billeteras, tarjeteros...).
+  //              Un color puede tener las suyas: { nombre:"Negro", hex:"#111", tallas:["M","XL"] }
+  //   colores:   al menos un color (nombre y hex)
+  //   fotos:     una o varias fotos de img/catalogo/. Con 2 o más, se deslizan.
+  //              El nombre del archivo NO debe llevar marcas (se ve en internet).
+  //   agotado:   true para mostrarlo sin poder pedirlo
+  //
+  // Ejemplos (copiar sin las // del inicio):
+  // { id:"camiseta-ejemplo", nombre:"Ejemplo", tipo:"Camiseta", categoria:"hombre", mostrar:true, precio:119900, tallas:["S","M","L","XL"], colores:[{nombre:"Negro",hex:"#151515"}], fotos:["img/catalogo/camiseta-ejemplo-1.jpg","img/catalogo/camiseta-ejemplo-2.jpg"] },
+  // { id:"gorra-ejemplo", nombre:"Ejemplo", tipo:"Gorra", categoria:"gorras", mostrar:true, precio:85000, tallas:[], colores:[{nombre:"Negro",hex:"#151515"}], fotos:["img/catalogo/gorra-ejemplo.jpg"] },
   // ===================================================================
-  disenos: [   // SUPUESTO: nombres, precios y tallas. Ajusta a lo real.
-    { id:"limitada-02", nombre:"Firma Bordada", tipo:"Camiseta", categoria:"hombre", limitada:true, mostrar:true,  precio:149900, tallas:["S","M","L","XL"], colores:[{nombre:"Blanco",hex:"#EEEAE2"},{nombre:"Negro",hex:"#151515"}], fotos:["img/catalogo/limitada-02.jpg"] },
-    { id:"limitada-01", nombre:"Escudo Barroco", tipo:"Camiseta", categoria:"hombre", limitada:true, mostrar:true , precio:149900, tallas:["S","M","L","XL"], colores:[{nombre:"Blanco",hex:"#EEEAE2"},{nombre:"Negro",hex:"#151515"}], fotos:["img/catalogo/limitada-01.jpg"] },
-    { id:"limitada-03", nombre:"Racing", tipo:"Camiseta", categoria:"hombre", limitada:true, mostrar:true , precio:149900, tallas:["S","M","L","XL"], colores:[{nombre:"Blanco",hex:"#EEEAE2"},{nombre:"Azul noche",hex:"#141826"}], fotos:["img/catalogo/limitada-03.jpg"] },
-
-    { id:"camiseta-halo",       nombre:"Halo",            tipo:"Camiseta", categoria:"hombre", mostrar:true,  precio:119900, tallas:["S","M","L","XL"], colores:[{nombre:"Negro",hex:"#151515"},{nombre:"Blanco",hex:"#EEEAE2"}], fotos:["img/catalogo/camiseta-halo.jpg"] },
-    { id:"camiseta-jinete",     nombre:"Jinete",          tipo:"Camiseta", categoria:"hombre", mostrar:true,  precio:119900, tallas:["S","M","L","XL"], colores:[{nombre:"Negro",hex:"#151515"},{nombre:"Blanco",hex:"#EEEAE2"}], fotos:["img/catalogo/camiseta-jinete.jpg"] },
-    { id:"camiseta-orbita",     nombre:"Órbita",          tipo:"Camiseta", categoria:"hombre", mostrar:true,  precio:119900, tallas:["S","M","L","XL"], colores:[{nombre:"Negro",hex:"#151515"},{nombre:"Blanco",hex:"#EEEAE2"}], fotos:["img/catalogo/camiseta-orbita.jpg"] },
-    { id:"camiseta-palmeras",   nombre:"Palmeras",        tipo:"Camiseta", categoria:"hombre", mostrar:true,  precio:119900, tallas:["S","M","L","XL"], colores:[{nombre:"Blanco",hex:"#EEEAE2"},{nombre:"Negro",hex:"#151515"}], fotos:["img/catalogo/camiseta-palmeras.jpg"] },
-    { id:"camiseta-salpicada",  nombre:"Salpicada",       tipo:"Camiseta", categoria:"hombre", mostrar:true,  precio:119900, tallas:["S","M","L","XL"], colores:[{nombre:"Negro",hex:"#151515"},{nombre:"Blanco",hex:"#EEEAE2"}], fotos:["img/catalogo/camiseta-salpicada.jpg"] },
-    { id:"camiseta-grabado",    nombre:"Grabado",         tipo:"Camiseta", categoria:"hombre", mostrar:true,  precio:119900, tallas:["S","M","L","XL"], colores:[{nombre:"Negro",hex:"#151515"},{nombre:"Arena",hex:"#A8977C"},{nombre:"Blanco",hex:"#EEEAE2"}], fotos:["img/catalogo/camiseta-grabado.jpg"] },
-    { id:"camiseta-puntos",     nombre:"Ondas de Puntos", tipo:"Camiseta", categoria:"hombre", mostrar:true,  precio:119900, tallas:["S","M","L","XL"], colores:[{nombre:"Negro",hex:"#151515"},{nombre:"Blanco",hex:"#EEEAE2"}], fotos:["img/catalogo/camiseta-puntos.jpg"] },
-    { id:"camiseta-sport",      nombre:"Sport Line",      tipo:"Camiseta", categoria:"hombre", mostrar:true,  precio:119900, tallas:["S","M","L","XL"], colores:[{nombre:"Negro",hex:"#151515"},{nombre:"Blanco",hex:"#EEEAE2"}], fotos:["img/catalogo/camiseta-sport.jpg"] },
-    { id:"camiseta-franja",     nombre:"Franja Neón",     tipo:"Camiseta", categoria:"hombre", mostrar:true,  precio:119900, tallas:["S","M","L","XL"], colores:[{nombre:"Negro",hex:"#151515"},{nombre:"Blanco",hex:"#EEEAE2"}], fotos:["img/catalogo/camiseta-franja.jpg"] },
-    { id:"camiseta-bordado",    nombre:"Bordado Tonal",   tipo:"Camiseta", categoria:"hombre", mostrar:true,  precio:119900, tallas:["S","M","L","XL"], colores:[{nombre:"Negro",hex:"#151515"},{nombre:"Blanco",hex:"#EEEAE2"}], fotos:["img/catalogo/camiseta-bordado.jpg"] },
-    { id:"camiseta-minimal",    nombre:"Minimal",         tipo:"Camiseta", categoria:"hombre", mostrar:true,  precio:119900, tallas:["S","M","L","XL"], colores:[{nombre:"Negro",hex:"#151515"},{nombre:"Arena",hex:"#D9C8B0"},{nombre:"Blanco",hex:"#EEEAE2"}], fotos:["img/catalogo/camiseta-minimal.jpg"] },
-    { id:"camiseta-lavada",     nombre:"Lavada",          tipo:"Camiseta", categoria:"hombre", mostrar:true,  precio:119900, tallas:["S","M","L","XL"], colores:[{nombre:"Negro lavado",hex:"#2A2C2C"},{nombre:"Gris",hex:"#5E5E5C"},{nombre:"Arena",hex:"#D8C29A"}], fotos:["img/catalogo/camiseta-lavada.jpg"] },
-    { id:"polo-clasico",        nombre:"Clásico",         tipo:"Polo",     categoria:"hombre", mostrar:true,  precio:129900, tallas:["S","M","L","XL"], colores:[{nombre:"Negro",hex:"#151515"},{nombre:"Beige",hex:"#D9C8B0"},{nombre:"Blanco",hex:"#EEEAE2"}], fotos:["img/catalogo/polo-clasico.jpg"] },
-    { id:"polo-ribete",         nombre:"Ribete",          tipo:"Polo",     categoria:"hombre", mostrar:true,  precio:129900, tallas:["S","M","L","XL"], colores:[{nombre:"Negro",hex:"#151515"},{nombre:"Verde",hex:"#1F5A3A"},{nombre:"Blanco",hex:"#EEEAE2"}], fotos:["img/catalogo/polo-ribete.jpg"] },
-    { id:"polo-contraste",      nombre:"Contraste",       tipo:"Polo",     categoria:"hombre", mostrar:true,  precio:129900, tallas:["S","M","L","XL"], colores:[{nombre:"Negro",hex:"#151515"},{nombre:"Verde oliva",hex:"#8A9A72"},{nombre:"Blanco",hex:"#EEEAE2"}], fotos:["img/catalogo/polo-contraste.jpg"] },
-
-    // Prendas donde el logo tapado ocupa casi todo el estampado.
-    { id:"camiseta-relieve",     nombre:"Relieve",     tipo:"Camiseta", categoria:"hombre", mostrar:true , precio:119900, tallas:["S","M","L","XL"], colores:[{nombre:"Negro",hex:"#151515"},{nombre:"Verde",hex:"#1F5A3A"},{nombre:"Blanco",hex:"#EEEAE2"}], fotos:["img/catalogo/camiseta-relieve.jpg"] },
-    { id:"camiseta-varsity",     nombre:"Varsity",     tipo:"Camiseta", categoria:"hombre", mostrar:true , precio:119900, tallas:["S","M","L","XL"], colores:[{nombre:"Negro",hex:"#151515"},{nombre:"Blanco",hex:"#EEEAE2"}], fotos:["img/catalogo/camiseta-varsity.jpg"] },
-    { id:"camiseta-studio",      nombre:"Studio",      tipo:"Camiseta", categoria:"hombre", mostrar:true , precio:119900, tallas:["S","M","L","XL"], colores:[{nombre:"Negro",hex:"#151515"},{nombre:"Blanco",hex:"#EEEAE2"}], fotos:["img/catalogo/camiseta-studio.jpg"] },
-    { id:"camiseta-contorno",    nombre:"Contorno",    tipo:"Camiseta", categoria:"hombre", mostrar:true , precio:119900, tallas:["S","M","L","XL"], colores:[{nombre:"Negro",hex:"#151515"},{nombre:"Azul noche",hex:"#1B2236"},{nombre:"Blanco",hex:"#EEEAE2"}], fotos:["img/catalogo/camiseta-contorno.jpg"] },
-    { id:"camiseta-gotica",      nombre:"Gótica",      tipo:"Camiseta", categoria:"hombre", mostrar:true , precio:119900, tallas:["S","M","L","XL"], colores:[{nombre:"Negro",hex:"#151515"},{nombre:"Blanco",hex:"#EEEAE2"}], fotos:["img/catalogo/camiseta-gotica.jpg"] },
-    { id:"camiseta-tipografica", nombre:"Tipográfica", tipo:"Camiseta", categoria:"hombre", mostrar:true , precio:119900, tallas:["S","M","L","XL"], colores:[{nombre:"Negro",hex:"#151515"},{nombre:"Gris",hex:"#4A4F57"},{nombre:"Azul",hex:"#6E8FB5"}], fotos:["img/catalogo/camiseta-tipografica.jpg"] },
-    { id:"camiseta-huesos",      nombre:"Huesos",      tipo:"Camiseta", categoria:"hombre", mostrar:true , precio:119900, tallas:["S","M","L","XL"], colores:[{nombre:"Negro",hex:"#151515"},{nombre:"Blanco",hex:"#EEEAE2"}], fotos:["img/catalogo/camiseta-huesos.jpg"] },
-    { id:"camiseta-bloque",      nombre:"Bloque",      tipo:"Camiseta", categoria:"hombre", mostrar:true , precio:119900, tallas:["S","M","L","XL"], colores:[{nombre:"Negro",hex:"#151515"},{nombre:"Rojo",hex:"#B3121F"},{nombre:"Blanco",hex:"#EEEAE2"}], fotos:["img/catalogo/camiseta-bloque.jpg"] },
-    { id:"camiseta-angeles",     nombre:"Ángeles",     tipo:"Camiseta", categoria:"hombre", mostrar:true , precio:119900, tallas:["S","M","L","XL"], colores:[{nombre:"Negro",hex:"#151515"},{nombre:"Blanco",hex:"#EEEAE2"}], fotos:["img/catalogo/camiseta-angeles.jpg"] },
-    { id:"camiseta-caricatura",  nombre:"Caricatura",  tipo:"Camiseta", categoria:"hombre", mostrar:true , precio:119900, tallas:["S","M","L","XL"], colores:[{nombre:"Negro",hex:"#151515"},{nombre:"Blanco",hex:"#EEEAE2"}], fotos:["img/catalogo/camiseta-caricatura.jpg"] },
-    { id:"camiseta-firma",       nombre:"Firma",       tipo:"Camiseta", categoria:"hombre", mostrar:true , precio:119900, tallas:["S","M","L","XL"], colores:[{nombre:"Negro",hex:"#151515"},{nombre:"Blanco",hex:"#EEEAE2"}], fotos:["img/catalogo/camiseta-firma.jpg"] },
-
-    { id:"mujer-corazon", nombre:"Corazón Bordado", tipo:"Camiseta", categoria:"mujer", mostrar:true,  precio:119900, tallas:["S","M","L"], colores:[{nombre:"Blanco",hex:"#EEEAE2"},{nombre:"Rojo",hex:"#C8161D"},{nombre:"Negro",hex:"#151515"}], fotos:["img/catalogo/mujer-corazon.jpg"] },
-    { id:"mujer-franjas", nombre:"Franjas",         tipo:"Camiseta", categoria:"mujer", mostrar:true , precio:119900, tallas:["S","M","L"], colores:[{nombre:"Blanco",hex:"#EEEAE2"},{nombre:"Café",hex:"#8E7A5E"},{nombre:"Negro",hex:"#151515"}], fotos:["img/catalogo/mujer-franjas.jpg"] },
-
-    // Las tallas por color salen de la foto del proveedor.
-    { id:"hoodie-grafiti", nombre:"Grafiti París", tipo:"Hoodie", categoria:"hoodies", mostrar:true, precio:189900, tallas:["M","L","XL","2XL"],
-      colores:[{nombre:"Blanco",hex:"#EEEAE2",tallas:["M","L","XL","2XL"]},{nombre:"Negro lavado",hex:"#2E2E2E",tallas:["M","XL"]}], fotos:["img/catalogo/hoodie-grafiti.jpg"] }
+  disenos: [
+    // GORRAS. Precios SUPUESTO de referencia (75000 / 85000 / 95000): cambiar por el real de cada una.
+    { id:"gorra-01", nombre:"Gorra 01", tipo:"Gorra", categoria:"gorras", mostrar:true, precio:85000, tallas:[], colores:[{nombre:"Negro",hex:"#151515"}], fotos:["img/catalogo/gorra-01-1.jpg","img/catalogo/gorra-01-2.jpg"] },
+    { id:"gorra-02", nombre:"Gorra 02", tipo:"Gorra", categoria:"gorras", mostrar:true, precio:95000, tallas:[], colores:[{nombre:"Negro",hex:"#151515"}], fotos:["img/catalogo/gorra-02-1.jpg","img/catalogo/gorra-02-2.jpg"] },
+    { id:"gorra-03", nombre:"Gorra 03", tipo:"Gorra", categoria:"gorras", mostrar:true, precio:85000, tallas:[], colores:[{nombre:"Negro",hex:"#151515"}], fotos:["img/catalogo/gorra-03-1.jpg","img/catalogo/gorra-03-2.jpg"] },
+    { id:"gorra-04", nombre:"Gorra 04", tipo:"Gorra", categoria:"gorras", mostrar:true, precio:95000, tallas:[], colores:[{nombre:"Negro",hex:"#151515"}], fotos:["img/catalogo/gorra-04-1.jpg","img/catalogo/gorra-04-2.jpg"] },
+    { id:"gorra-05", nombre:"Gorra 05", tipo:"Gorra", categoria:"gorras", mostrar:true, precio:85000, tallas:[], colores:[{nombre:"Negro",hex:"#151515"}], fotos:["img/catalogo/gorra-05-1.jpg","img/catalogo/gorra-05-2.jpg"] },
+    { id:"gorra-06", nombre:"Gorra 06", tipo:"Gorra", categoria:"gorras", mostrar:true, precio:95000, tallas:[], colores:[{nombre:"Gris claro",hex:"#B9B4AC"}], fotos:["img/catalogo/gorra-06-1.jpg","img/catalogo/gorra-06-2.jpg"] },
+    { id:"gorra-07", nombre:"Gorra 07", tipo:"Gorra", categoria:"gorras", mostrar:true, precio:75000, tallas:[], colores:[{nombre:"Café",hex:"#7A5E48"}], fotos:["img/catalogo/gorra-07-1.jpg","img/catalogo/gorra-07-2.jpg"] },
+    { id:"gorra-08", nombre:"Gorra 08", tipo:"Gorra", categoria:"gorras", mostrar:true, precio:85000, tallas:[], colores:[{nombre:"Blanco",hex:"#EEEAE2"}], fotos:["img/catalogo/gorra-08-1.jpg","img/catalogo/gorra-08-2.jpg"] },
+    { id:"gorra-09", nombre:"Gorra 09", tipo:"Gorra", categoria:"gorras", mostrar:true, precio:75000, tallas:[], colores:[{nombre:"Negro",hex:"#151515"}], fotos:["img/catalogo/gorra-09-1.jpg","img/catalogo/gorra-09-2.jpg"] },
+    { id:"gorra-10", nombre:"Gorra 10", tipo:"Gorra", categoria:"gorras", mostrar:true, precio:95000, tallas:[], colores:[{nombre:"Negro",hex:"#151515"}], fotos:["img/catalogo/gorra-10-1.jpg","img/catalogo/gorra-10-2.jpg"] },
+    { id:"gorra-11", nombre:"Gorra 11", tipo:"Gorra", categoria:"gorras", mostrar:true, precio:85000, tallas:[], colores:[{nombre:"Negro",hex:"#151515"}], fotos:["img/catalogo/gorra-11-1.jpg","img/catalogo/gorra-11-2.jpg"] },
+    { id:"gorra-12", nombre:"Gorra 12", tipo:"Gorra", categoria:"gorras", mostrar:true, precio:95000, tallas:[], colores:[{nombre:"Negro",hex:"#151515"}], fotos:["img/catalogo/gorra-12-1.jpg","img/catalogo/gorra-12-2.jpg"] },
+    { id:"gorra-13", nombre:"Gorra 13", tipo:"Gorra", categoria:"gorras", mostrar:true, precio:85000, tallas:[], colores:[{nombre:"Negro",hex:"#151515"}], fotos:["img/catalogo/gorra-13-1.jpg","img/catalogo/gorra-13-2.jpg"] },
+    { id:"gorra-14", nombre:"Gorra 14", tipo:"Gorra", categoria:"gorras", mostrar:true, precio:85000, tallas:[], colores:[{nombre:"Negro",hex:"#151515"}], fotos:["img/catalogo/gorra-14-1.jpg","img/catalogo/gorra-14-2.jpg"] },
+    { id:"gorra-15", nombre:"Gorra 15", tipo:"Gorra", categoria:"gorras", mostrar:true, precio:95000, tallas:[], colores:[{nombre:"Gris oscuro",hex:"#3A3A3A"}], fotos:["img/catalogo/gorra-15-1.jpg","img/catalogo/gorra-15-2.jpg"] },
+    { id:"gorra-16", nombre:"Gorra 16", tipo:"Gorra", categoria:"gorras", mostrar:true, precio:75000, tallas:[], colores:[{nombre:"Negro",hex:"#151515"}], fotos:["img/catalogo/gorra-16-1.jpg","img/catalogo/gorra-16-2.jpg"] },
+    { id:"gorra-17", nombre:"Gorra 17", tipo:"Gorra", categoria:"gorras", mostrar:true, precio:85000, tallas:[], colores:[{nombre:"Blanco y rosado",hex:"#EAD9DE"}], fotos:["img/catalogo/gorra-17-1.jpg","img/catalogo/gorra-17-2.jpg"] },
+    { id:"gorra-18", nombre:"Gorra 18", tipo:"Gorra", categoria:"gorras", mostrar:true, precio:75000, tallas:[], colores:[{nombre:"Blanco y negro",hex:"#EEEAE2"}], fotos:["img/catalogo/gorra-18-1.jpg","img/catalogo/gorra-18-2.jpg"] },
+    { id:"gorra-19", nombre:"Gorra 19", tipo:"Gorra", categoria:"gorras", mostrar:true, precio:85000, tallas:[], colores:[{nombre:"Azul oscuro",hex:"#1C2541"}], fotos:["img/catalogo/gorra-19-1.jpg","img/catalogo/gorra-19-2.jpg"] },
+    { id:"gorra-20", nombre:"Gorra 20", tipo:"Gorra", categoria:"gorras", mostrar:true, precio:85000, tallas:[], colores:[{nombre:"Negro",hex:"#151515"}], fotos:["img/catalogo/gorra-20-1.jpg","img/catalogo/gorra-20-2.jpg"] },
+    { id:"gorra-21", nombre:"Gorra 21", tipo:"Gorra", categoria:"gorras", mostrar:true, precio:85000, tallas:[], colores:[{nombre:"Negro",hex:"#151515"}], fotos:["img/catalogo/gorra-21-1.jpg","img/catalogo/gorra-21-2.jpg"] },
+    { id:"gorra-22", nombre:"Gorra 22", tipo:"Gorra", categoria:"gorras", mostrar:true, precio:95000, tallas:[], colores:[{nombre:"Negro",hex:"#151515"}], fotos:["img/catalogo/gorra-22-1.jpg","img/catalogo/gorra-22-2.jpg"] },
+    { id:"gorra-23", nombre:"Gorra 23", tipo:"Gorra", categoria:"gorras", mostrar:true, precio:95000, tallas:[], colores:[{nombre:"Negro",hex:"#151515"}], fotos:["img/catalogo/gorra-23-1.jpg","img/catalogo/gorra-23-2.jpg"] },
+    { id:"gorra-24", nombre:"Gorra 24", tipo:"Gorra", categoria:"gorras", mostrar:true, precio:75000, tallas:[], colores:[{nombre:"Negro",hex:"#151515"}], fotos:["img/catalogo/gorra-24-1.jpg","img/catalogo/gorra-24-2.jpg"] },
+    { id:"gorra-25", nombre:"Gorra 25", tipo:"Gorra", categoria:"gorras", mostrar:true, precio:95000, tallas:[], colores:[{nombre:"Negro",hex:"#151515"}], fotos:["img/catalogo/gorra-25-1.jpg","img/catalogo/gorra-25-2.jpg"] },
+    { id:"gorra-26", nombre:"Gorra 26", tipo:"Gorra", categoria:"gorras", mostrar:true, precio:85000, tallas:[], colores:[{nombre:"Negro",hex:"#151515"}], fotos:["img/catalogo/gorra-26-1.jpg","img/catalogo/gorra-26-2.jpg"] },
+    { id:"gorra-27", nombre:"Gorra 27", tipo:"Gorra", categoria:"gorras", mostrar:true, precio:75000, tallas:[], colores:[{nombre:"Negro",hex:"#151515"}], fotos:["img/catalogo/gorra-27-1.jpg","img/catalogo/gorra-27-2.jpg"] },
+    { id:"gorra-28", nombre:"Gorra 28", tipo:"Gorra", categoria:"gorras", mostrar:true, precio:95000, tallas:[], colores:[{nombre:"Negro",hex:"#151515"}], fotos:["img/catalogo/gorra-28-1.jpg","img/catalogo/gorra-28-2.jpg"] },
+    { id:"gorra-29", nombre:"Gorra 29", tipo:"Gorra", categoria:"gorras", mostrar:true, precio:85000, tallas:[], colores:[{nombre:"Negro",hex:"#151515"}], fotos:["img/catalogo/gorra-29-1.jpg","img/catalogo/gorra-29-2.jpg"] },
+    { id:"gorra-30", nombre:"Gorra 30", tipo:"Gorra", categoria:"gorras", mostrar:true, precio:85000, tallas:[], colores:[{nombre:"Negro",hex:"#151515"}], fotos:["img/catalogo/gorra-30-1.jpg","img/catalogo/gorra-30-2.jpg"] },
+    // BILLETERAS / TARJETEROS. Precios SUPUESTO de referencia: cambiar por el real de cada una.
+    { id:"billetera-01", nombre:"Billetera 01", tipo:"Billetera", categoria:"billeteras", mostrar:true, precio:95000, tallas:[], colores:[{nombre:"Negro",hex:"#151515"}], fotos:["img/catalogo/billetera-01.jpg"] },
+    { id:"billetera-02", nombre:"Billetera 02", tipo:"Billetera", categoria:"billeteras", mostrar:true, precio:95000, tallas:[], colores:[{nombre:"Negro",hex:"#151515"}], fotos:["img/catalogo/billetera-02.jpg"] },
+    { id:"billetera-03", nombre:"Billetera 03", tipo:"Billetera", categoria:"billeteras", mostrar:true, precio:95000, tallas:[], colores:[{nombre:"Negro",hex:"#151515"}], fotos:["img/catalogo/billetera-03.jpg"] },
+    { id:"billetera-04", nombre:"Billetera 04", tipo:"Billetera", categoria:"billeteras", mostrar:true, precio:95000, tallas:[], colores:[{nombre:"Negro",hex:"#151515"}], fotos:["img/catalogo/billetera-04.jpg"] },
+    { id:"tarjetero-01", nombre:"Tarjetero 01", tipo:"Tarjetero", categoria:"billeteras", mostrar:true, precio:75000, tallas:[], colores:[{nombre:"Negro",hex:"#151515"}], fotos:["img/catalogo/tarjetero-01.jpg"] },
+    { id:"tarjetero-02", nombre:"Tarjetero 02", tipo:"Tarjetero", categoria:"billeteras", mostrar:true, precio:75000, tallas:[], colores:[{nombre:"Negro y gris",hex:"#4A4A4A"}], fotos:["img/catalogo/tarjetero-02.jpg"] },
   ],
 
   // ===================================================================
-  // BÁSICAS POR TELA: camisetas lisas (una tarjeta por línea de tela).
-  // Para agregar una línea: copia un bloque completo { ... }, pégalo debajo y cámbialo.
+  // BÁSICAS: camisetas sin estampado, 270 g, 100% algodón.
+  // Para agregar otra línea: copia un bloque completo { ... }, pégalo debajo y cámbialo.
   //   id:        único, minúsculas, sin espacios ni tildes
   //   nombre:    lo que ve el cliente
   //   gramaje:   peso de la tela en gramos (GSM)
-  //   detalle:   una frase corta sobre la tela
+  //   detalle:   una frase corta sobre la camiseta
   //   precio:    en pesos, sin puntos (89900 = $89.900)
   //   limitada:  true solo para la edición limitada
   //   agotado:   true para mostrarla sin poder pedirla
   //   medidas:   guía de tallas en cm (ancho axila a axila / largo hombro a borde).
   //              Las tallas que aparecen en la tarjeta salen de aquí.
+  //              null = la talla se vende, pero la guía dice "Por confirmar".
   //   colores:   cada color con su foto de frente y de espalda ("" = silueta "Foto próximamente")
   // ===================================================================
   productos: [
     {
-      id: "limitada-310", nombre: "Edición Limitada", gramaje: 310,
-      detalle: "Nuestra tela más pesada. Lote único.",
-      precio: 109900,                                   // SUPUESTO
-      limitada: true, agotado: false,
-      medidas: { S:{ancho:53.5, largo:67.5}, M:{ancho:57, largo:69}, L:{ancho:57, largo:72} },  // Verificar M y L (mismo ancho)
-      colores: [                                        // SUPUESTO
-        { nombre:"Negro",  hex:"#151515", foto:"", fotoEspalda:"" },
-        { nombre:"Blanco", hex:"#EEEAE2", foto:"", fotoEspalda:"" }
-      ]
-    },
-    {
-      id: "premium-270", nombre: "Premium", gramaje: 270,
-      detalle: "Tela pesada que mantiene la forma lavada tras lavada.",
+      id: "basicas-270", nombre: "Básicas", gramaje: 270,
+      detalle: "Camiseta sin estampado, 100% algodón.",
       precio: 89900,                                    // SUPUESTO
       limitada: false, agotado: false,
-      medidas: { S:{ancho:53.5, largo:67.5}, M:{ancho:57, largo:69}, L:{ancho:57, largo:72} },  // Verificar M y L (mismo ancho)
-      colores: [                                        // SUPUESTO
-        { nombre:"Negro",  hex:"#151515", foto:"", fotoEspalda:"" },
+      medidas: { S:{ancho:53.5, largo:67.5}, M:{ancho:57, largo:69}, L:{ancho:57, largo:72}, XL:null },  // SUPUESTO: verificar M y L (mismo ancho) y medir XL
+      colores: [
         { nombre:"Blanco", hex:"#EEEAE2", foto:"", fotoEspalda:"" },
-        { nombre:"Gris",   hex:"#8C8C8A", foto:"", fotoEspalda:"" }
-      ]
-    },
-    {
-      id: "acid-240", nombre: "Acid Wash", gramaje: 240,
-      detalle: "100% algodón con lavado ácido. Cada prenda queda única.",
-      precio: 94900,                                    // SUPUESTO
-      limitada: false, agotado: false,
-      medidas: { S:{ancho:51, largo:70}, M:{ancho:55, largo:70}, L:{ancho:57.5, largo:75}, XL:{ancho:62.5, largo:76} },
-      colores: [                                        // SUPUESTO
-        { nombre:"Negro deslavado", hex:"#2B2B2B", foto:"", fotoEspalda:"" },
-        { nombre:"Gris deslavado",  hex:"#6E6E6B", foto:"", fotoEspalda:"" }
-      ]
-    },
-    {
-      id: "esencial-210", nombre: "Esencial", gramaje: 210,   // SUPUESTO: nombre de la línea
-      detalle: "Más liviana y fresca, para el día a día.",
-      precio: 69900,                                    // SUPUESTO
-      limitada: false, agotado: false,
-      medidas: { S:{ancho:53.5, largo:67.5}, M:{ancho:57, largo:69}, L:{ancho:57, largo:72} },  // Verificar M y L (mismo ancho)
-      colores: [                                        // SUPUESTO
         { nombre:"Negro",  hex:"#151515", foto:"", fotoEspalda:"" },
-        { nombre:"Blanco", hex:"#EEEAE2", foto:"", fotoEspalda:"" },
         { nombre:"Gris",   hex:"#8C8C8A", foto:"", fotoEspalda:"" }
       ]
     }

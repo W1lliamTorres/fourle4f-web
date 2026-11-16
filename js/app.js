@@ -22,7 +22,7 @@ const redes = [
 const igUrl = ig ? redes[0].url : "#";
 const pagos = Array.isArray(CONFIG.pagos) ? CONFIG.pagos : [];
 const L = CONFIG.limitado || {};
-// Básicas por tela (tallas salen de su guía de medidas)
+// Básicas (tallas salen de su guía de medidas)
 const productos = (CONFIG.productos || []).filter(p => p && p.id && Array.isArray(p.colores) && p.colores.length)
   .map(p => ({ ...p, tipoItem: "basica" }));
 // Prendas con foto (tallas propias, y opcionalmente por color)
@@ -31,6 +31,10 @@ const disenos = (CONFIG.disenos || []).filter(d => d && d.id && d.mostrar !== fa
 const tallasDe = (p, ci = 0) => p.tipoItem === "diseno"
   ? ((p.colores[ci] && p.colores[ci].tallas) || p.tallas || [])
   : Object.keys(p.medidas || {});
+// Productos sin tallas (gorras, billeteras, tarjeteros...) se piden en talla única
+const TALLA_UNICA = "Única";
+const tallasValidas = (p, ci = 0) => { const t = tallasDe(p, ci); return t.length ? t : [TALLA_UNICA]; };
+const sinTallas = p => p.colores.every((_, ci) => !tallasDe(p, ci).length);
 const producto = id => disenos.find(d => d.id === id) || productos.find(p => p.id === id);
 const nombreItem = p => p.tipoItem === "diseno" ? `${p.tipo || ""} ${p.nombre}`.trim() : `${p.nombre} ${+p.gramaje} g`;
 const lineaLimitada = productos.find(p => p.limitada);
@@ -157,8 +161,10 @@ function fotoHTML(p, c){
   return h;
 }
 
-const radiosTallas = (p, sin, ci = 0) => tallasDe(p, ci).map((t,i) =>
-  `<label><input type="radio" name="t-${esc(p.id)}" value="${esc(t)}" ${i===0?"checked":""} ${sin?"disabled":""}><span>${esc(t)}</span></label>`).join("");
+const radiosTallas = (p, sin, ci = 0) => tallasDe(p, ci).length
+  ? tallasDe(p, ci).map((t,i) =>
+    `<label><input type="radio" name="t-${esc(p.id)}" value="${esc(t)}" ${i===0?"checked":""} ${sin?"disabled":""}><span>${esc(t)}</span></label>`).join("")
+  : `<span class="talla-unica">Talla única</span>`;
 
 function galeriaHTML(d){
   const alt = esc(nombreItem(d));
@@ -194,13 +200,14 @@ const tarjetaDiseno = d => {
     </fieldset>
     <div class="acciones-prod">
       <button class="btn ${sin ? "btn-linea" : "btn-solido"}" type="button" data-add="${pid}" ${sin?"disabled":""}>${sin ? "Agotado" : "Añadir a la bolsa"}</button>
-      <a class="ver-guia" target="_blank" rel="noopener" href="${esc(wa(`Hola FOURLE4F, quiero asesoría de talla para ${nombreItem(d)}. Mido ___ cm y peso ___ kg.`))}">Asesoría de talla</a>
+      ${sinTallas(d) ? "" : `<a class="ver-guia" target="_blank" rel="noopener" href="${esc(wa(`Hola FOURLE4F, quiero asesoría de talla para ${nombreItem(d)}. Mido ___ cm y peso ___ kg.`))}">Asesoría de talla</a>`}
     </div>
   </article>`;
 };
 
-// Orden: limitadas primero, luego el resto de prendas con foto y al final las básicas por tela
+// Orden: limitadas primero, luego el resto de prendas con foto y al final las básicas
 const ordenDisenos = [...disenos.filter(d => d.limitada), ...disenos.filter(d => !d.limitada)];
+$("#productos").insertAdjacentHTML("afterend", `<p class="vacia cat-vacia" id="catVacia" hidden>Muy pronto: estamos cargando los productos de esta sección. Escríbenos por WhatsApp si buscas algo en especial.</p>`);
 $("#productos").innerHTML = ordenDisenos.map(tarjetaDiseno).join("") + productos.map(p => {
   const sin = !disponible(p), pid = esc(p.id);
   return `<article class="prod${p.limitada ? " es-limitada" : ""}" id="p-${pid}" data-cats="${esc(catsDe(p).join(" "))}">
@@ -259,9 +266,8 @@ $$(".galeria .pista").forEach(pista => pista.addEventListener("scroll", () => {
 }, { passive: true }));
 
 /* ---------- Filtros del catálogo y menú desplegable ---------- */
-const todos = [...ordenDisenos, ...productos];
-const catsConItems = categorias.filter(c => todos.some(p => catsDe(p).includes(c.id)));
-const opciones = [{ id: "todo", nombre: "Ver todo" }, ...catsConItems];
+// Todas las categorías de config.js salen en los filtros, aunque aún no tengan productos
+const opciones = [{ id: "todo", nombre: "Ver todo" }, ...categorias];
 $("#filtros").innerHTML = opciones.map(c =>
   `<button type="button" class="filtro" data-cat="${esc(c.id)}" aria-pressed="${c.id === "todo"}">${esc(c.id === "todo" ? "Todo" : c.nombre)}</button>`).join("");
 $("#subCat").innerHTML = opciones.map(c =>
@@ -285,6 +291,7 @@ function filtrar(cat){
   });
   $$("#filtros .filtro").forEach(b => b.setAttribute("aria-pressed", String(b.dataset.cat === cat)));
   $$("#subCat a").forEach(a => a.toggleAttribute("aria-current", a.dataset.cat === cat));
+  $("#catVacia").hidden = n > 0;
   const nom = (opciones.find(o => o.id === cat) || {}).nombre;
   $("#conteoCat").textContent = `${nom}: ${n} ${n === 1 ? "prenda" : "prendas"}`;
 }
@@ -381,7 +388,7 @@ bolsa = bolsa.filter(i => {
   const p = producto(i.id);
   if (!p || !disponible(p) || !Number.isInteger(i.qty) || i.qty < 1) return false;
   const ci = p.colores.findIndex(c => c.nombre === i.color);
-  return ci >= 0 && tallasDe(p, ci).includes(i.talla);
+  return ci >= 0 && tallasValidas(p, ci).includes(i.talla);
 }).map(i => ({ id:i.id, color:i.color, talla:i.talla, qty:Math.min(i.qty, 20) }));
 
 const guardar = () => { try { localStorage.setItem(CLAVE, JSON.stringify(bolsa)); } catch(e){} };
@@ -453,8 +460,11 @@ document.addEventListener("click", e => {
   if (add){
     const p = producto(add.dataset.add);
     if (!p || !disponible(p)) return;
-    const talla = [...document.getElementsByName("t-" + p.id)].find(r => r.checked)?.value;
     const ci = [...document.getElementsByName("c-" + p.id)].find(r => r.checked)?.value;
+    // Sin tallas: se pide en talla única, sin selector S/M/L/XL
+    const talla = tallasDe(p, +ci || 0).length
+      ? [...document.getElementsByName("t-" + p.id)].find(r => r.checked)?.value
+      : TALLA_UNICA;
     const color = p.colores[+ci || 0].nombre;
     if (!talla) return;
     const ex = bolsa.find(i => i.id === p.id && i.talla === talla && i.color === color);

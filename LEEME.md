@@ -12,6 +12,7 @@ Esta guía explica cómo cambiar los datos del sitio sin saber programar.
 | `css/estilos.css` | Colores, tipografías y diseño | No hace falta |
 | `js/app.js` | El funcionamiento (bolsa, pedido por WhatsApp) | No |
 | `.claude/` | Configuración de pruebas | No lo subas al hosting |
+| `CLAUDE.md` | Instrucciones internas para Claude. Está en `.gitignore`: no se sube a GitHub ni a Hostinger | No |
 
 ## 2. Cómo editar `js/config.js`
 
@@ -39,58 +40,60 @@ Esta guía explica cómo cambiar los datos del sitio sin saber programar.
 | `limitado.agotado` | `true` muestra el sello "Agotado" y bloquea la línea limitada | `false` |
 | `pagos` | Medios de pago. Salen en "Cómo comprar", en la bolsa y en el pie de página. **No pongas números de cuenta aquí**: esos se envían por WhatsApp | `["Nequi", "Llaves bancarias"]` |
 | `proximo` | Sección misteriosa "Próximamente" que lleva a Instagram. `activa: false` la oculta | — |
-| `categorias` | Subsecciones del menú desplegable "Catálogo" y de los filtros | — |
+| `categorias` | Subsecciones del menú desplegable "Catálogo" y de los filtros. Salen todas, aunque aún no tengan productos (en ese caso se ve "Muy pronto"). Hoy: Hombre / Unisex, Hoodies, Edición limitada, Básicas, Gorras, Ropa interior hombres, Calcetines y Billeteras / Tarjeteros | — |
 | `avisoOriginales` | Frase que sale sobre el catálogo. `""` la quita | — |
 | `avisoFotos` | Franja "¿Quieres ver las prendas sin difuminar?" con botón a WhatsApp. `activo: false` la quita | — |
-| `disenos` | Las prendas con foto (punto 3A) | — |
-| `productos` | Las básicas por tela (punto 3B) | — |
+| `disenos` | Los productos con foto: camisetas, hoodies, gorras, ropa interior, calcetines, billeteras (punto 3A) | — |
+| `productos` | Las Básicas de 270 g (punto 3B) | — |
 | `municipios` | Las opciones de entrega que ve el cliente | — |
 
-## 3A. Prendas con foto (`disenos`)
+## 3A. Productos con foto (`disenos`)
 
-Cada prenda es una línea:
+La lista empieza vacía. Dentro de `config.js` hay dos líneas de ejemplo (una camiseta y una gorra) comentadas con `//`: cópialas dentro de `disenos: [ ]`, quítales las `//` del inicio y cámbialas. Cada producto es una línea:
 
 ```js
-{ id:"camiseta-halo", nombre:"Halo", tipo:"Camiseta", categoria:"hombre", mostrar:true, precio:119900, tallas:["S","M","L","XL"], colores:[{nombre:"Negro",hex:"#151515"},{nombre:"Blanco",hex:"#EEEAE2"}], fotos:["img/catalogo/camiseta-halo.jpg"] },
+{ id:"camiseta-halo", nombre:"Halo", tipo:"Camiseta", categoria:"hombre", mostrar:true, precio:119900, tallas:["S","M","L","XL"], colores:[{nombre:"Negro",hex:"#151515"}], fotos:["img/catalogo/camiseta-halo-1.jpg","img/catalogo/camiseta-halo-2.jpg"] },
 ```
 
-- **`categoria`:** `"hombre"` (Hombre / Unisex), `"mujer"` o `"hoodies"`.
-- **`limitada: true`:** la prenda sale también en "Edición limitada", con borde dorado, y su foto aparece en el ticket de la sección Limitado.
-- **`mostrar: false`:** la prenda queda guardada pero no se ve en la página.
-- **Varias fotos:** `fotos:["img/catalogo/a.jpg","img/catalogo/b.jpg"]`. Se deslizan en el celular y tienen flechas en el computador.
+- **`categoria`:** `"hombre"` (Hombre / Unisex), `"hoodies"`, `"gorras"`, `"ropa-interior"` (Ropa interior hombres), `"calcetines"` o `"billeteras"` (Billeteras / Tarjeteros).
+- **`limitada: true`:** el producto sale también en "Edición limitada", con borde dorado, y su foto aparece en el ticket de la sección Limitado.
+- **`mostrar: false`:** queda guardado pero no se ve en la página.
+- **Varias fotos:** pon dos o más en `fotos`, separadas por comas: `fotos:["img/catalogo/a-1.jpg","img/catalogo/a-2.jpg"]`. Se deslizan en el celular y tienen flechas y puntos en el computador. Con una sola foto se ve fija; sin fotos (`fotos:[]`) se ve una silueta con "Foto próximamente".
+- **Talla única (gorras, billeteras, tarjeteros):** deja las tallas vacías, `tallas:[]`. La tarjeta muestra "Talla única", no pide escoger S/M/L/XL y el pedido llega como "talla Única".
 - **Tallas distintas por color:** ponlas dentro del color, por ejemplo `{nombre:"Negro",hex:"#2E2E2E",tallas:["M","XL"]}`.
-- **Fotos nuevas:** formato vertical 3:4 (900 × 1200 px), menos de 150 KB, en `img/catalogo/`. Usa nombres sin marcas (ej. `camiseta-halo.jpg`), porque el nombre del archivo se ve en internet.
+- **Fotos nuevas:** guárdalas en `img/catalogo/`, formato vertical 3:4 (900 × 1200 px), menos de 150 KB. Usa nombres sin marcas (ej. `gorra-negra-1.jpg`), porque el nombre del archivo se ve en internet.
 - **`agotado: true`:** se ve, pero no se puede pedir.
 
-## 3B. Básicas por tela (`productos`)
+## 3B. Básicas (`productos`)
 
-Cada línea de tela es una tarjeta del catálogo y una pestaña de la guía de tallas:
+Camisetas sin estampado de 270 g, 100% algodón, en Blanco, Negro y Gris, tallas S, M, L y XL. Son una tarjeta del catálogo (filtro "Básicas") y una pestaña de la guía de tallas:
 
 ```js
 {
-  id: "premium-270", nombre: "Premium", gramaje: 270,
-  detalle: "Tela pesada que mantiene la forma lavada tras lavada.",
+  id: "basicas-270", nombre: "Básicas", gramaje: 270,
+  detalle: "Camiseta sin estampado, 100% algodón.",
   precio: 89900,
   limitada: false, agotado: false,
-  medidas: { S:{ancho:53.5, largo:67.5}, M:{ancho:57, largo:69}, L:{ancho:57, largo:72} },
+  medidas: { S:{ancho:53.5, largo:67.5}, M:{ancho:57, largo:69}, L:{ancho:57, largo:72}, XL:null },
   colores: [
+    { nombre:"Blanco", hex:"#EEEAE2", foto:"", fotoEspalda:"" },
     { nombre:"Negro",  hex:"#151515", foto:"", fotoEspalda:"" },
-    { nombre:"Blanco", hex:"#EEEAE2", foto:"", fotoEspalda:"" }
+    { nombre:"Gris",   hex:"#8C8C8A", foto:"", fotoEspalda:"" }
   ]
 },
 ```
 
-- **`medidas`:** es la guía de tallas de esa tela, en cm. Las tallas que el cliente puede escoger salen de aquí: para quitar una talla, borra su parte (ej. `L:{...}`); para agregar una, añádela (ej. `XL:{ancho:60, largo:74}`). Los decimales van con punto: `53.5`.
+- **`medidas`:** es la guía de tallas, en cm. Las tallas que el cliente puede escoger salen de aquí: para quitar una talla, borra su parte (ej. `L:{...}`); para agregar una, añádela (ej. `XL:{ancho:60, largo:74}`). Si una talla se vende pero aún no tienes sus medidas, ponla en `null` (hoy `XL:null`): se puede pedir y la guía dice "Por confirmar". Los decimales van con punto: `53.5`.
 - **Agregar un color:** copia una línea `{ nombre:..., hex:..., foto:"", fotoEspalda:"" }` dentro de `colores`. El `hex` es el color del círculo y de la silueta mientras no hay foto; puedes buscar "selector de color" en Google para encontrarlo.
-- **Agregar una línea:** copia un bloque completo `{ ... },` y cambia el `id` (único, en minúsculas, sin espacios ni tildes).
+- **Agregar otra línea:** copia un bloque completo `{ ... },` y cambia el `id` (único, en minúsculas, sin espacios ni tildes).
 - **Marcarla agotada:** `agotado: true`. Se sigue viendo, pero no se puede pedir.
-- **`limitada: true`:** úsalo solo en la edición limitada. Esa línea alimenta la sección "Limitado" (tela y tallas) y su tarjeta lleva borde dorado.
+- **`limitada: true`:** úsalo solo en una línea de edición limitada. Esa línea alimenta la sección "Limitado" (tela y tallas) y su tarjeta lleva borde dorado.
 
 ## 4. Fotos
 
-1. Copia la foto en la carpeta `img/`, con un nombre sin espacios ni tildes (ej. `premium-negro.jpg`).
-2. En el color correspondiente, escribe la ruta: `foto:"img/premium-negro.jpg"`.
-3. Si tienes foto de espalda, ponla en `fotoEspalda:"img/premium-negro-espalda.jpg"`. En computador se ve al pasar el mouse y en celular con los botones "Frente / Espalda".
+1. Copia la foto en la carpeta `img/catalogo/`, con un nombre sin espacios, sin tildes y sin marcas (ej. `basica-negra.jpg`).
+2. En el color de la Básica, escribe la ruta: `foto:"img/catalogo/basica-negra.jpg"`. En los productos con foto (3A) va en la lista `fotos`.
+3. Si tienes foto de espalda de una Básica, ponla en `fotoEspalda:"img/catalogo/basica-negra-espalda.jpg"`. En computador se ve al pasar el mouse y en celular con los botones "Frente / Espalda".
 4. Para el inicio, pon una foto vertical en `hero.foto`. Si la dejas vacía, se muestra el trébol bordado.
 5. Para la sección "Conoce FOURLE4F", llena `conoce.fotos` (cada una con su `foto` y su `alt`, que es la descripción para quien no ve la imagen). Usa solo fotos de prendas que vendes:
    - `outfit`: persona con un outfit FOURLE4F, de cuerpo entero (vertical, 1200 × 1500 px).
@@ -155,11 +158,9 @@ El sitio en fourle4f.com se actualiza solo desde GitHub: cada vez que se suben c
 |---|---|
 | `js/config.js` → `whatsapp` | Número definitivo (hoy está el temporal 312 218 1447) |
 | `js/config.js` → `redes.tiktok` y `redes.facebook` | Cuando crees las cuentas |
-| `js/config.js` → `disenos` | Nombres, precios ($119.900 camisetas, $129.900 polos, $149.900 limitada, $189.900 hoodie), tallas y colores reales de cada prenda con foto |
-| `js/config.js` → `productos` → `precio` | Precios reales (hoy: $109.900, $89.900, $94.900 y $69.900) |
-| `js/config.js` → `productos` → `colores` | Colores reales de cada línea |
-| `js/config.js` → `productos` → `nombre` "Esencial" | Nombre definitivo de la línea de 210 g |
-| `js/config.js` → `productos` → `medidas` | Confirmar con el proveedor: en 310 g, 270 g y 210 g las tallas M y L tienen el mismo ancho (57 cm) |
+| `js/config.js` → `disenos` | Cargar los productos reales (la lista está vacía) |
+| `js/config.js` → `productos` → `precio` | Precio real de las Básicas (hoy: $89.900) |
+| `js/config.js` → `productos` → `medidas` | Medir la talla XL y confirmar con el proveedor que M y L tienen el mismo ancho (57 cm) |
 | `index.html` → `og:url` y `og:image` | Tu dominio |
 | `img/` | Logo final y fotos de producto |
 
