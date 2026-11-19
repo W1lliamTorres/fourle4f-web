@@ -113,28 +113,6 @@ nav.menu.abierto a{padding:14px 0;border-bottom:1px solid var(--linea)}
   @keyframes aparece{from{opacity:0;transform:scale(.92) rotate(-8deg)}to{opacity:1;transform:none}}
 }
 
-/* Limitado: ticket */
-.limitado{padding:88px 0;background:var(--monte);border-bottom:1px solid var(--linea)}
-.ticket{display:grid;border:1px solid var(--oro);border-radius:6px;position:relative;background:linear-gradient(180deg,rgba(201,165,78,.06),transparent 60%)}
-@media(min-width:860px){.ticket{grid-template-columns:1fr 320px}}
-.ticket-main{padding:32px 24px}
-@media(min-width:720px){.ticket-main{padding:48px}}
-.ticket h2{font-size:clamp(28px,4.4vw,52px);margin:14px 0 18px;max-width:16ch}
-.lim-texto{color:var(--crudo-2);max-width:40ch;margin-bottom:28px}
-.ticket-talon{position:relative;border-top:1px dashed var(--oro-linea);padding:28px 24px}
-@media(min-width:860px){.ticket-talon{border-top:0;border-left:1px dashed var(--oro-linea);padding:48px 32px}}
-.ticket-talon::before,.ticket-talon::after{content:"";position:absolute;width:26px;height:26px;border-radius:50%;background:var(--monte);border:1px solid var(--oro)}
-.ticket-talon::before{top:-14px;left:-14px;clip-path:inset(50% 0 0 50%)}
-.ticket-talon::after{top:-14px;right:-14px;clip-path:inset(50% 50% 0 0)}
-@media(min-width:860px){.ticket-talon::after{top:auto;bottom:-14px;left:-14px;right:auto;clip-path:inset(0 0 50% 50%)}}
-.datos{margin:0;display:grid;grid-template-columns:1fr 1fr;gap:18px 16px}
-@media(min-width:860px){.datos{grid-template-columns:1fr}}
-.datos dt{font-family:var(--boton);font-stretch:125%;font-size:10px;letter-spacing:.16em;text-transform:uppercase;color:var(--gris)}
-.datos dd{margin:4px 0 0;font-family:var(--titulo);font-weight:600;font-size:20px;line-height:1.1;text-transform:uppercase}
-.codigo{height:44px;margin-top:26px;opacity:.5;background:repeating-linear-gradient(90deg,var(--crudo) 0 2px,transparent 2px 5px,var(--crudo) 5px 6px,transparent 6px 10px,var(--crudo) 10px 13px,transparent 13px 15px)}
-.sello{position:absolute;top:50%;left:50%;transform:translate(-50%,-50%) rotate(-12deg);border:3px solid var(--oro);color:var(--oro);padding:4px 18px;font-family:var(--brocha);font-size:44px;background:rgba(11,26,20,.9)}
-.sello[hidden]{display:none}
-
 /* Bloques */
 section.bloque{padding:88px 0;border-bottom:1px solid var(--linea)}
 .cabeza{display:flex;flex-wrap:wrap;align-items:end;justify-content:space-between;gap:16px;margin-bottom:40px}
@@ -155,7 +133,6 @@ section.bloque{padding:88px 0;border-bottom:1px solid var(--linea)}
 .lados button{background:rgba(8,8,7,.75);border:1px solid var(--linea);border-radius:2px;font-size:11px;padding:4px 8px;cursor:pointer}
 .lados button[aria-pressed="true"]{background:var(--crudo);color:#000}
 .prod{display:flex;flex-direction:column}
-.prod.es-limitada .foto{outline:1px solid var(--oro);outline-offset:-1px}
 .insignias{display:flex;flex-wrap:wrap;gap:6px;margin-top:14px}
 .insignia{font-family:var(--boton);font-stretch:125%;font-size:10px;letter-spacing:.12em;text-transform:uppercase;font-weight:700;padding:4px 8px;border-radius:2px;border:1px solid var(--linea);color:var(--crudo-2)}
 .insignia.oro{border-color:var(--oro);color:var(--oro)}
@@ -443,13 +420,6 @@ nav.menu.abierto .submenu a{padding:10px 0;border:0;font-size:11px}
 .puntos{position:absolute;bottom:10px;left:0;right:0;display:flex;justify-content:center;gap:6px;pointer-events:none}
 .puntos i{width:6px;height:6px;border-radius:50%;background:rgba(237,230,214,.35)}
 .puntos i.on{background:var(--crudo)}
-
-/* Fotos dentro del ticket de Edición limitada */
-.lim-fotos{display:flex;gap:10px;margin:-6px 0 26px}
-.lim-fotos a{display:block;width:92px;border:1px solid var(--oro-linea);border-radius:3px;overflow:hidden;transition:border-color .2s,transform .2s}
-.lim-fotos a:hover{border-color:var(--oro);transform:translateY(-2px)}
-.lim-fotos img{width:100%;height:auto;aspect-ratio:3/4;object-fit:cover}
-@media(min-width:720px){.lim-fotos a{width:110px}}
 
 /* ===== Próximamente (sección misteriosa) ===== */
 .proximo{position:relative;overflow:hidden;padding:110px 0;background:#050505;border-bottom:1px solid var(--linea);isolation:isolate}

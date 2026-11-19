@@ -49,22 +49,15 @@ const CONFIG = {
     }
   },
 
-  // Sección "Limitado". Toma la tela y las tallas de la línea marcada con limitada:true.
-  limitado: {
-    nombre: "Drop 01 · Edición limitada",
-    titulo: "Pocas unidades. Sin reposición.",
-    texto: "Nuestra tela más pesada, en un lote corto a propósito. Cuando se acaba, se acaba.",
-    edicion: "01",
-    agotado: false        // true = sello "Agotado" en esta sección y la línea limitada bloqueada
-  },
-
-  // Sección misteriosa "Próximamente": lleva a Instagram. activa: false para ocultarla.
+  // Sección "Sugerencias" (antes "Próximamente"). activa: false la oculta junto con el botón del menú.
+  //   mensaje: texto que llega por WhatsApp al tocar el botón. Vacío ("") = el botón lleva a Instagram.
   proximo: {
     activa: true,
-    etiqueta: "Próximamente",
-    titulo: "Algo se está cosiendo.",
-    texto: "Estamos trabajando en algo nuevo para ti. No te podemos contar más… todavía. Las pistas salen primero en Instagram.",
-    boton: "Ver las pistas en Instagram"
+    etiqueta: "Sugerencias",
+    titulo: "La espera terminó.",
+    texto: "Las prendas ya están cosidas y en el catálogo. Ahora queremos escucharte: cuéntanos qué prenda, color, estilo o talla te gustaría encontrar en FOURLE4F. Leemos cada mensaje y las mejores ideas entran en la próxima edición.",
+    boton: "Enviar mi sugerencia",
+    mensaje: "Hola FOURLE4F, tengo una sugerencia para la próxima edición: ___"
   },
 
   // Medios de pago. Los datos de cuenta NO van aquí: se envían por WhatsApp.
@@ -73,18 +66,19 @@ const CONFIG = {
   // ===================================================================
   // SUBSECCIONES DEL CATÁLOGO (aparecen en los filtros y en el menú
   // desplegable "Catálogo"). Se muestran todas, aunque todavía no tengan
-  // prendas. "limitada" junta todo lo marcado con limitada:true; "basicas"
+  // prendas. "basicas"
   // son las camisetas lisas (lista "productos", más abajo).
   // ===================================================================
   categorias: [
-    { id: "hombre",        nombre: "Hombre / Unisex" },
-    { id: "hoodies",       nombre: "Hoodies" },
-    { id: "limitada",      nombre: "Edición limitada" },
-    { id: "basicas",       nombre: "Básicas" },
     { id: "gorras",        nombre: "Gorras" },
-    { id: "ropa-interior", nombre: "Ropa interior hombres" },
+    { id: "basicas",       nombre: "Camisetas básicas" },
+    { id: "hombre",        nombre: "Camisetas estampadas" },
+    { id: "hoodies",       nombre: "Hoodies" },
+    { id: "bermudas",      nombre: "Bermudas" },
+    { id: "pantalones",    nombre: "Pantalones" },
+    { id: "ropa-interior", nombre: "Ropa interior" },
     { id: "calcetines",    nombre: "Calcetines" },
-    { id: "billeteras",    nombre: "Billeteras / Tarjeteros" }
+    { id: "billeteras",    nombre: "Accesorios" }
   ],
 
   // Aviso que sale arriba del catálogo. "" para quitarlo.
@@ -106,12 +100,13 @@ const CONFIG = {
   //   id:        único, minúsculas, sin espacios ni tildes
   //   nombre:    lo que ve el cliente
   //   tipo:      "Camiseta", "Polo", "Hoodie", "Gorra", "Bóxer", "Calcetines", "Billetera"...
-  //   categoria: "hombre", "hoodies", "gorras", "ropa-interior", "calcetines" o "billeteras"
-  //   limitada:  true = aparece también en Edición limitada, con borde dorado
+  //   categoria: "hombre" (Camisetas estampadas), "hoodies", "gorras", "bermudas", "pantalones",
+  //              "ropa-interior", "calcetines" o "billeteras" (Accesorios)
   //   mostrar:   false = el producto NO se ve en la página (queda guardado)
   //   precio:    en pesos, sin puntos
   //   tallas:    tallas disponibles, ej. ["S","M","L","XL"].
   //              Vacío [] = TALLA ÚNICA (gorras, billeteras, tarjeteros...).
+  //   refTalla:  opcional con talla única: muestra "Talla única (ref. M)". Ej. refTalla:"M"
   //              Un color puede tener las suyas: { nombre:"Negro", hex:"#111", tallas:["M","XL"] }
   //   colores:   al menos un color (nombre y hex)
   //   fotos:     una o varias fotos de img/catalogo/. Con 2 o más, se deslizan.
@@ -123,11 +118,56 @@ const CONFIG = {
   // { id:"gorra-ejemplo", nombre:"Ejemplo", tipo:"Gorra", categoria:"gorras", mostrar:true, precio:85000, tallas:[], colores:[{nombre:"Negro",hex:"#151515"}], fotos:["img/catalogo/gorra-ejemplo.jpg"] },
   // ===================================================================
   disenos: [
-    // CAMISETAS ESTAMPADAS (Hombre / Unisex).
+    // CAMISETAS ESTAMPADAS (sección Camisetas).
     { id:"estampada-01", nombre:"Estampada 01", tipo:"Camiseta", categoria:"hombre", mostrar:true, precio:79500, tallas:["M","L"], colores:[{nombre:"Negro",hex:"#151515"}], fotos:["img/catalogo/estampada-01-1.jpg","img/catalogo/estampada-01-2.jpg"] },
     { id:"estampada-02", nombre:"Estampada 02", tipo:"Camiseta", categoria:"hombre", mostrar:true, precio:79500, tallas:["M","L"], colores:[{nombre:"Café",hex:"#6B5E4E"}], fotos:["img/catalogo/estampada-02-1.jpg","img/catalogo/estampada-02-2.jpg"] },
     { id:"estampada-03", nombre:"Estampada 03", tipo:"Camiseta", categoria:"hombre", mostrar:true, precio:79500, tallas:["M"], colores:[{nombre:"Arena",hex:"#B8AE9C"}], fotos:["img/catalogo/estampada-03-1.jpg","img/catalogo/estampada-03-2.jpg"] },
     { id:"estampada-04", nombre:"Estampada 04", tipo:"Camiseta", categoria:"hombre", mostrar:true, precio:79500, tallas:["XL"], colores:[{nombre:"Gris",hex:"#8C8A86"}], fotos:["img/catalogo/estampada-04-1.jpg","img/catalogo/estampada-04-2.jpg"] },
+    // CAMISETAS TOP QUALITY. Tallas según la foto del proveedor.
+    { id:"top-01", nombre:"Top Quality 01", tipo:"Camiseta", categoria:"hombre", mostrar:true, precio:79500, tallas:["M"], colores:[{nombre:"Blanco",hex:"#EEEAE2"}], fotos:["img/catalogo/camiseta-01-1.jpg","img/catalogo/camiseta-01-2.jpg"] },
+    { id:"top-02", nombre:"Top Quality 02", tipo:"Camiseta", categoria:"hombre", mostrar:true, precio:79500, tallas:["M"], colores:[{nombre:"Blanco",hex:"#EEEAE2"}], fotos:["img/catalogo/camiseta-02-1.jpg","img/catalogo/camiseta-02-2.jpg"] },
+    { id:"top-03", nombre:"Top Quality 03", tipo:"Camiseta", categoria:"hombre", mostrar:true, precio:79500, tallas:["M"], colores:[{nombre:"Blanco",hex:"#EEEAE2"}], fotos:["img/catalogo/camiseta-03-1.jpg","img/catalogo/camiseta-03-2.jpg"] },
+    { id:"top-04", nombre:"Top Quality 04", tipo:"Camiseta", categoria:"hombre", mostrar:true, precio:79500, tallas:["M"], colores:[{nombre:"Negro",hex:"#151515"}], fotos:["img/catalogo/camiseta-04-1.jpg","img/catalogo/camiseta-04-2.jpg"] },
+    { id:"top-05", nombre:"Top Quality 05", tipo:"Camiseta", categoria:"hombre", mostrar:true, precio:79500, tallas:["M"], colores:[{nombre:"Negro",hex:"#151515"}], fotos:["img/catalogo/camiseta-05-1.jpg","img/catalogo/camiseta-05-2.jpg"] },
+    { id:"top-06", nombre:"Top Quality 06", tipo:"Camiseta", categoria:"hombre", mostrar:true, precio:79500, tallas:["M"], colores:[{nombre:"Negro",hex:"#151515"}], fotos:["img/catalogo/camiseta-06-1.jpg","img/catalogo/camiseta-06-2.jpg"] },
+    { id:"top-07", nombre:"Top Quality 07", tipo:"Camiseta", categoria:"hombre", mostrar:true, precio:79500, tallas:["M"], colores:[{nombre:"Negro",hex:"#151515"}], fotos:["img/catalogo/camiseta-07-1.jpg","img/catalogo/camiseta-07-2.jpg"] },
+    { id:"top-08", nombre:"Top Quality 08", tipo:"Camiseta", categoria:"hombre", mostrar:true, precio:79500, tallas:["M"], colores:[{nombre:"Negro",hex:"#151515"}], fotos:["img/catalogo/camiseta-08-1.jpg","img/catalogo/camiseta-08-2.jpg"] },
+    { id:"top-09", nombre:"Top Quality 09", tipo:"Camiseta", categoria:"hombre", mostrar:true, precio:79500, tallas:["M"], colores:[{nombre:"Negro",hex:"#151515"}], fotos:["img/catalogo/camiseta-09-1.jpg","img/catalogo/camiseta-09-2.jpg"] },
+    { id:"top-10", nombre:"Top Quality 10", tipo:"Camiseta", categoria:"hombre", mostrar:true, precio:79500, tallas:["M"], colores:[{nombre:"Blanco",hex:"#EEEAE2"}], fotos:["img/catalogo/camiseta-10-1.jpg","img/catalogo/camiseta-10-2.jpg"] },
+    { id:"top-11", nombre:"Top Quality 11", tipo:"Camiseta", categoria:"hombre", mostrar:true, precio:79500, tallas:["M"], colores:[{nombre:"Negro",hex:"#151515"}], fotos:["img/catalogo/camiseta-11-1.jpg","img/catalogo/camiseta-11-2.jpg"] },
+    { id:"top-12", nombre:"Top Quality 12", tipo:"Camiseta", categoria:"hombre", mostrar:true, precio:79500, tallas:["M"], colores:[{nombre:"Blanco",hex:"#EEEAE2"}], fotos:["img/catalogo/camiseta-12-1.jpg","img/catalogo/camiseta-12-2.jpg"] },
+    { id:"top-13", nombre:"Top Quality 13", tipo:"Camiseta", categoria:"hombre", mostrar:true, precio:79500, tallas:["M"], colores:[{nombre:"Blanco",hex:"#EEEAE2"}], fotos:["img/catalogo/camiseta-13-1.jpg","img/catalogo/camiseta-13-2.jpg"] },
+    { id:"top-14", nombre:"Top Quality 14", tipo:"Camiseta", categoria:"hombre", mostrar:true, precio:79500, tallas:["L"], colores:[{nombre:"Negro",hex:"#151515"}], fotos:["img/catalogo/camiseta-14-1.jpg","img/catalogo/camiseta-14-2.jpg"] },
+    { id:"top-15", nombre:"Top Quality 15", tipo:"Camiseta", categoria:"hombre", mostrar:true, precio:79500, tallas:["L"], colores:[{nombre:"Blanco",hex:"#EEEAE2"}], fotos:["img/catalogo/camiseta-15-1.jpg","img/catalogo/camiseta-15-2.jpg"] },
+    { id:"top-16", nombre:"Top Quality 16", tipo:"Camiseta", categoria:"hombre", mostrar:true, precio:79500, tallas:["L"], colores:[{nombre:"Blanco",hex:"#EEEAE2"}], fotos:["img/catalogo/camiseta-16-1.jpg","img/catalogo/camiseta-16-2.jpg"] },
+    { id:"top-17", nombre:"Top Quality 17", tipo:"Camiseta", categoria:"hombre", mostrar:true, precio:79500, tallas:["L"], colores:[{nombre:"Negro",hex:"#151515"}], fotos:["img/catalogo/camiseta-17-1.jpg","img/catalogo/camiseta-17-2.jpg"] },
+    // HOODIES / CHAQUETAS.
+    { id:"chaqueta-01", nombre:"Chaqueta 01", tipo:"Chaqueta", categoria:"hoodies", mostrar:true, precio:199500, tallas:["M","L"], colores:[{nombre:"Blanco",hex:"#EEEAE2"}], fotos:["img/catalogo/chaqueta-01-1.jpg","img/catalogo/chaqueta-01-2.jpg"] },
+    { id:"chaqueta-02", nombre:"Chaqueta 02", tipo:"Chaqueta", categoria:"hoodies", mostrar:true, precio:199500, tallas:["M","L"], colores:[{nombre:"Negro y gris",hex:"#4A4A4A"}], fotos:["img/catalogo/chaqueta-02-1.jpg","img/catalogo/chaqueta-02-2.jpg"] },
+    { id:"chaqueta-03", nombre:"Chaqueta 03", tipo:"Chaqueta", categoria:"hoodies", mostrar:true, precio:199500, tallas:["M","L"], colores:[{nombre:"Negro",hex:"#151515"}], fotos:["img/catalogo/chaqueta-03-1.jpg","img/catalogo/chaqueta-03-2.jpg"] },
+    { id:"chaqueta-04", nombre:"Chaqueta 04", tipo:"Chaqueta", categoria:"hoodies", mostrar:true, precio:199500, tallas:["M","L"], colores:[{nombre:"Gris oscuro",hex:"#3E3F42"}], fotos:["img/catalogo/chaqueta-04-1.jpg","img/catalogo/chaqueta-04-2.jpg"] },
+    { id:"chaqueta-05", nombre:"Chaqueta 05", tipo:"Chaqueta", categoria:"hoodies", mostrar:true, precio:199500, tallas:["M","L"], colores:[{nombre:"Beige",hex:"#B9A88C"}], fotos:["img/catalogo/chaqueta-05-1.jpg","img/catalogo/chaqueta-05-2.jpg"] },
+    { id:"chaqueta-06", nombre:"Chaqueta 06", tipo:"Chaqueta", categoria:"hoodies", mostrar:true, precio:199500, tallas:["M","L"], colores:[{nombre:"Morado",hex:"#4B2E83"}], fotos:["img/catalogo/chaqueta-06-1.jpg","img/catalogo/chaqueta-06-2.jpg"] },
+    { id:"chaqueta-07", nombre:"Chaqueta 07", tipo:"Chaqueta", categoria:"hoodies", mostrar:true, precio:199500, tallas:["M","L"], colores:[{nombre:"Rojo",hex:"#A3172B"}], fotos:["img/catalogo/chaqueta-07-1.jpg","img/catalogo/chaqueta-07-2.jpg"] },
+    { id:"chaqueta-08", nombre:"Chaqueta 08", tipo:"Chaqueta", categoria:"hoodies", mostrar:true, precio:199500, tallas:["M","L"], colores:[{nombre:"Negro",hex:"#151515"}], fotos:["img/catalogo/chaqueta-08-1.jpg","img/catalogo/chaqueta-08-2.jpg"] },
+    // BERMUDAS. Talla única (equivale a una M).
+    { id:"bermuda-01", nombre:"Bermuda 01", tipo:"Bermuda", categoria:"bermudas", mostrar:true, precio:75900, tallas:[], refTalla:"M", colores:[{nombre:"Negro",hex:"#151515"}], fotos:["img/catalogo/bermuda-01.jpg"] },
+    { id:"bermuda-02", nombre:"Bermuda 02", tipo:"Bermuda", categoria:"bermudas", mostrar:true, precio:75900, tallas:[], refTalla:"M", colores:[{nombre:"Crema",hex:"#E3D7BF"}], fotos:["img/catalogo/bermuda-02.jpg"] },
+    { id:"bermuda-03", nombre:"Bermuda 03", tipo:"Bermuda", categoria:"bermudas", mostrar:true, precio:75900, tallas:[], refTalla:"M", colores:[{nombre:"Caqui",hex:"#BFA67A"}], fotos:["img/catalogo/bermuda-03.jpg"] },
+    // PANTALONES. Referencia (Clásico, Baggy, Cargo) y talla según el proveedor.
+    { id:"pantalon-01", nombre:"Clásico 01", tipo:"Pantalón", categoria:"pantalones", mostrar:true, precio:115000, tallas:["28"], colores:[{nombre:"Negro",hex:"#2B2B2D"}], fotos:["img/catalogo/pantalon-01-1.jpg","img/catalogo/pantalon-01-2.jpg"] },
+    { id:"pantalon-02", nombre:"Clásico 02", tipo:"Pantalón", categoria:"pantalones", mostrar:true, precio:115000, tallas:["28"], colores:[{nombre:"Negro",hex:"#2B2B2D"}], fotos:["img/catalogo/pantalon-02-1.jpg","img/catalogo/pantalon-02-2.jpg"] },
+    { id:"pantalon-03", nombre:"Clásico 03", tipo:"Pantalón", categoria:"pantalones", mostrar:true, precio:115000, tallas:["30"], colores:[{nombre:"Azul",hex:"#3F6E9E"}], fotos:["img/catalogo/pantalon-03-1.jpg","img/catalogo/pantalon-03-2.jpg"] },
+    { id:"pantalon-04", nombre:"Baggy 01", tipo:"Pantalón", categoria:"pantalones", mostrar:true, precio:115000, tallas:["28"], colores:[{nombre:"Gris oscuro",hex:"#4A4B4E"}], fotos:["img/catalogo/pantalon-04-1.jpg","img/catalogo/pantalon-04-2.jpg"] },
+    { id:"pantalon-05", nombre:"Baggy 02", tipo:"Pantalón", categoria:"pantalones", mostrar:true, precio:115000, tallas:["28"], colores:[{nombre:"Gris claro",hex:"#A3A39E"}], fotos:["img/catalogo/pantalon-05-1.jpg","img/catalogo/pantalon-05-2.jpg"] },
+    { id:"pantalon-06", nombre:"Baggy 03", tipo:"Pantalón", categoria:"pantalones", mostrar:true, precio:115000, tallas:["30"], colores:[{nombre:"Azul",hex:"#4F6F8C"}], fotos:["img/catalogo/pantalon-06-1.jpg","img/catalogo/pantalon-06-2.jpg"] },
+    { id:"pantalon-07", nombre:"Baggy 04", tipo:"Pantalón", categoria:"pantalones", mostrar:true, precio:115000, tallas:["30"], colores:[{nombre:"Azul claro",hex:"#7D9BB5"}], fotos:["img/catalogo/pantalon-07-1.jpg","img/catalogo/pantalon-07-2.jpg"] },
+    { id:"pantalon-08", nombre:"Cargo 01", tipo:"Pantalón", categoria:"pantalones", mostrar:true, precio:115000, tallas:["28"], colores:[{nombre:"Negro",hex:"#2B2B2D"}], fotos:["img/catalogo/pantalon-08-1.jpg","img/catalogo/pantalon-08-2.jpg"] },
+    { id:"pantalon-09", nombre:"Cargo 02", tipo:"Pantalón", categoria:"pantalones", mostrar:true, precio:115000, tallas:["28"], colores:[{nombre:"Azul",hex:"#3F6E9E"}], fotos:["img/catalogo/pantalon-09-1.jpg","img/catalogo/pantalon-09-2.jpg"] },
+    { id:"pantalon-10", nombre:"Cargo 03", tipo:"Pantalón", categoria:"pantalones", mostrar:true, precio:115000, tallas:["30"], colores:[{nombre:"Negro",hex:"#2B2B2D"}], fotos:["img/catalogo/pantalon-10-1.jpg","img/catalogo/pantalon-10-2.jpg"] },
+    // CALCETINES Y ROPA INTERIOR. Colores variados (el cliente lo coordina por WhatsApp). Calcetines: precio por par.
+    { id:"calcetines-01", nombre:"Calcetines 01 (par)", tipo:"Calcetines", categoria:"calcetines", mostrar:true, precio:8900, tallas:["Universal"], colores:[{nombre:"Variado",hex:"#8C8C8A"}], fotos:["img/catalogo/calcetines-01-1.jpg","img/catalogo/calcetines-01-2.jpg"] },
+    { id:"boxer-01", nombre:"Bóxer 01", tipo:"Bóxer", categoria:"ropa-interior", mostrar:true, precio:22500, tallas:["M"], colores:[{nombre:"Variado",hex:"#8C8C8A"}], fotos:["img/catalogo/boxer-01-1.jpg","img/catalogo/boxer-01-2.jpg"] },
     // GORRAS.
     { id:"gorra-01", nombre:"Gorra 01", tipo:"Gorra", categoria:"gorras", mostrar:true, precio:65000, tallas:[], colores:[{nombre:"Negro",hex:"#151515"}], fotos:["img/catalogo/gorra-01-1.jpg","img/catalogo/gorra-01-2.jpg"] },
     { id:"gorra-02", nombre:"Gorra 02", tipo:"Gorra", categoria:"gorras", mostrar:true, precio:99000, tallas:[], colores:[{nombre:"Negro",hex:"#151515"}], fotos:["img/catalogo/gorra-02-1.jpg","img/catalogo/gorra-02-2.jpg"] },
@@ -177,7 +217,6 @@ const CONFIG = {
   //   gramaje:   peso de la tela en gramos (GSM)
   //   detalle:   una frase corta sobre la camiseta
   //   precio:    en pesos, sin puntos (89900 = $89.900)
-  //   limitada:  true solo para la edición limitada
   //   agotado:   true para mostrarla sin poder pedirla
   //   medidas:   guía de tallas en cm (ancho axila a axila / largo hombro a borde).
   //              Las tallas que aparecen en la tarjeta salen de aquí.
@@ -189,7 +228,7 @@ const CONFIG = {
       id: "basicas-270", nombre: "Básicas", gramaje: 270,
       detalle: "Camiseta sin estampado, 100% algodón.",
       precio: 79500,
-      limitada: false, agotado: false,
+      agotado: false,
       medidas: { S:{ancho:53.5, largo:67.5}, M:{ancho:57, largo:69}, L:{ancho:57, largo:72} },  // SUPUESTO: verificar M y L (mismo ancho). Para vender XL agrega  XL:{ancho:__, largo:__}
       colores: [
         { nombre:"Negro",  hex:"#151515", foto:"img/catalogo/basica-negra-frente.jpg",  fotoEspalda:"img/catalogo/basica-negra-espalda.jpg" },

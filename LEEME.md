@@ -36,11 +36,9 @@ Esta guía explica cómo cambiar los datos del sitio sin saber programar.
 | `promo.texto` | El texto de esa barra | `"Nuevo drop disponible"` |
 | `hero.foto` | Foto grande del inicio. Vacía = se muestra el trébol bordado | `"img/hero.jpg"` |
 | `conoce.fotos` | Las 4 fotos de la sección "Conoce FOURLE4F" (outfit, dobladas, tela, mision). Vacías = ilustración de prenda sobre textura de tela (ver punto 4) | `outfit: { foto:"img/conoce-outfit.jpg", alt:"..." }` |
-| `limitado.nombre`, `titulo`, `texto`, `edicion` | Textos de la sección Limitado | — |
-| `limitado.agotado` | `true` muestra el sello "Agotado" y bloquea la línea limitada | `false` |
 | `pagos` | Medios de pago. Salen en "Cómo comprar", en la bolsa y en el pie de página. **No pongas números de cuenta aquí**: esos se envían por WhatsApp | `["Nequi", "Llaves bancarias"]` |
-| `proximo` | Sección misteriosa "Próximamente" que lleva a Instagram. `activa: false` la oculta | — |
-| `categorias` | Subsecciones del menú desplegable "Catálogo" y de los filtros. Salen todas, aunque aún no tengan productos (en ese caso se ve "Muy pronto"). Hoy: Hombre / Unisex, Hoodies, Edición limitada, Básicas, Gorras, Ropa interior hombres, Calcetines y Billeteras / Tarjeteros | — |
+| `proximo` | Sección "Sugerencias" (botón en el menú de arriba). Con `mensaje` el botón abre WhatsApp con ese texto; con `mensaje: ""` lleva a Instagram. `activa: false` oculta la sección y el botón | — |
+| `categorias` | Subsecciones del menú desplegable "Catálogo" y de los filtros. Salen todas, aunque aún no tengan productos (en ese caso se ve "Muy pronto"). Hoy: Gorras, Camisetas básicas, Camisetas estampadas, Hoodies, Bermudas, Pantalones, Ropa interior, Calcetines y Accesorios. | — |
 | `avisoOriginales` | Frase que sale sobre el catálogo. `""` la quita | — |
 | `avisoFotos` | Franja "¿Quieres ver las prendas sin difuminar?" con botón a WhatsApp. `activo: false` la quita | — |
 | `disenos` | Los productos con foto: camisetas, hoodies, gorras, ropa interior, calcetines, billeteras (punto 3A) | — |
@@ -55,25 +53,24 @@ La lista empieza vacía. Dentro de `config.js` hay dos líneas de ejemplo (una c
 { id:"camiseta-halo", nombre:"Halo", tipo:"Camiseta", categoria:"hombre", mostrar:true, precio:119900, tallas:["S","M","L","XL"], colores:[{nombre:"Negro",hex:"#151515"}], fotos:["img/catalogo/camiseta-halo-1.jpg","img/catalogo/camiseta-halo-2.jpg"] },
 ```
 
-- **`categoria`:** `"hombre"` (Hombre / Unisex), `"hoodies"`, `"gorras"`, `"ropa-interior"` (Ropa interior hombres), `"calcetines"` o `"billeteras"` (Billeteras / Tarjeteros).
-- **`limitada: true`:** el producto sale también en "Edición limitada", con borde dorado, y su foto aparece en el ticket de la sección Limitado.
+- **`categoria`:** `"hombre"` (Camisetas estampadas), `"hoodies"`, `"gorras"`, `"bermudas"`, `"pantalones"`, `"ropa-interior"` (Ropa interior), `"calcetines"` o `"billeteras"` (Accesorios).
 - **`mostrar: false`:** queda guardado pero no se ve en la página.
 - **Varias fotos:** pon dos o más en `fotos`, separadas por comas: `fotos:["img/catalogo/a-1.jpg","img/catalogo/a-2.jpg"]`. Se deslizan en el celular y tienen flechas y puntos en el computador. Con una sola foto se ve fija; sin fotos (`fotos:[]`) se ve una silueta con "Foto próximamente".
-- **Talla única (gorras, billeteras, tarjeteros):** deja las tallas vacías, `tallas:[]`. La tarjeta muestra "Talla única", no pide escoger S/M/L/XL y el pedido llega como "talla Única".
+- **Talla única (gorras, billeteras, tarjeteros):** deja las tallas vacías, `tallas:[]`. La tarjeta muestra "Talla única", no pide escoger S/M/L/XL y el pedido llega como "talla Única". Si quieres indicar a qué talla equivale, agrega `refTalla:"M"` y la tarjeta dirá "Talla única (ref. M)".
 - **Tallas distintas por color:** ponlas dentro del color, por ejemplo `{nombre:"Negro",hex:"#2E2E2E",tallas:["M","XL"]}`.
 - **Fotos nuevas:** guárdalas en `img/catalogo/`, formato vertical 3:4 (900 × 1200 px), menos de 150 KB. Usa nombres sin marcas (ej. `gorra-negra-1.jpg`), porque el nombre del archivo se ve en internet.
 - **`agotado: true`:** se ve, pero no se puede pedir.
 
 ## 3B. Básicas (`productos`)
 
-Camisetas sin estampado de 270 g, 100% algodón, en Blanco, Negro y Gris, tallas S, M y L. Son una tarjeta del catálogo (filtro "Básicas") y una pestaña de la guía de tallas:
+Camisetas sin estampado de 270 g, 100% algodón, en Blanco, Negro y Gris, tallas S, M y L. Son una tarjeta del catálogo (filtro "Camisetas básicas") y una pestaña de la guía de tallas:
 
 ```js
 {
   id: "basicas-270", nombre: "Básicas", gramaje: 270,
   detalle: "Camiseta sin estampado, 100% algodón.",
   precio: 79500,
-  limitada: false, agotado: false,
+  agotado: false,
   medidas: { S:{ancho:53.5, largo:67.5}, M:{ancho:57, largo:69}, L:{ancho:57, largo:72} },
   colores: [
     { nombre:"Blanco", hex:"#EEEAE2", foto:"", fotoEspalda:"" },
@@ -87,7 +84,6 @@ Camisetas sin estampado de 270 g, 100% algodón, en Blanco, Negro y Gris, tallas
 - **Agregar un color:** copia una línea `{ nombre:..., hex:..., foto:"", fotoEspalda:"" }` dentro de `colores`. El `hex` es el color del círculo y de la silueta mientras no hay foto; puedes buscar "selector de color" en Google para encontrarlo.
 - **Agregar otra línea:** copia un bloque completo `{ ... },` y cambia el `id` (único, en minúsculas, sin espacios ni tildes).
 - **Marcarla agotada:** `agotado: true`. Se sigue viendo, pero no se puede pedir.
-- **`limitada: true`:** úsalo solo en una línea de edición limitada. Esa línea alimenta la sección "Limitado" (tela y tallas) y su tarjeta lleva borde dorado.
 
 ## 4. Fotos
 

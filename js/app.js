@@ -21,7 +21,6 @@ const redes = [
 ].filter(Boolean);
 const igUrl = ig ? redes[0].url : "#";
 const pagos = Array.isArray(CONFIG.pagos) ? CONFIG.pagos : [];
-const L = CONFIG.limitado || {};
 // Básicas (tallas salen de su guía de medidas)
 const productos = (CONFIG.productos || []).filter(p => p && p.id && Array.isArray(p.colores) && p.colores.length)
   .map(p => ({ ...p, tipoItem: "basica" }));
@@ -37,11 +36,8 @@ const tallasValidas = (p, ci = 0) => { const t = tallasDe(p, ci); return t.lengt
 const sinTallas = p => p.colores.every((_, ci) => !tallasDe(p, ci).length);
 const producto = id => disenos.find(d => d.id === id) || productos.find(p => p.id === id);
 const nombreItem = p => p.tipoItem === "diseno" ? `${p.tipo || ""} ${p.nombre}`.trim() : `${p.nombre} ${+p.gramaje} g`;
-const lineaLimitada = productos.find(p => p.limitada);
 const categorias = (CONFIG.categorias || []).filter(c => c && c.id && c.nombre);
-const catsDe = p => p.tipoItem === "basica"
-  ? ["basicas"].concat(p.limitada ? ["limitada"] : [])
-  : [p.categoria].concat(p.limitada ? ["limitada"] : []);
+const catsDe = p => p.tipoItem === "basica" ? ["basicas"] : [p.categoria];
 
 /* ---------- Enlaces y textos generales ---------- */
 $("#anio").textContent = new Date().getFullYear();
@@ -116,40 +112,22 @@ btnMenu.addEventListener("click", () => {
 });
 menu.addEventListener("click", e => { if (e.target.closest("a")) cerrarMenu(); });
 
-/* ---------- Sección Limitado ---------- */
-const limAgotado = !!L.agotado || !!(lineaLimitada && lineaLimitada.agotado);
-$("#limNombre").textContent = L.nombre || "";
-$("#limTitulo").textContent = limAgotado ? "Agotado. Gracias por la suerte." : (L.titulo || "");
-$("#limTexto").textContent = limAgotado ? "Esta edición ya se acabó. Síguenos en Instagram para enterarte de la próxima." : (L.texto || "");
-$("#limEdicion").textContent = L.edicion || "01";
-$("#limTela").textContent = lineaLimitada ? `${+lineaLimitada.gramaje} GSM` : "—";
-$("#limTallas").textContent = lineaLimitada ? tallasDe(lineaLimitada).join(" · ") : "—";
-if (limAgotado){
-  $("#sello").hidden = false;
-  const b = $("#limBtn"); b.textContent = "Avísame la próxima"; b.href = igUrl; b.target = "_blank"; b.rel = "noopener"; b.removeAttribute("data-cat");
-}
-// Fotos de las prendas de edición limitada dentro del ticket
-const fotosLim = disenos.filter(d => d.limitada && d.fotos.length);
-if (fotosLim.length){
-  $("#limFotos").innerHTML = fotosLim.slice(0, 3).map(d =>
-    `<a href="#d-${esc(d.id)}" data-cat="limitada" data-ir="${esc(d.id)}" aria-label="Ver ${esc(nombreItem(d))}"><img src="${esc(d.fotos[0])}" alt="" loading="lazy" width="900" height="1200"></a>`).join("");
-} else $("#limFotos").remove();
-
-/* ---------- Próximamente ---------- */
+/* ---------- Sugerencias (sección #proximo) ---------- */
 const P = CONFIG.proximo || {};
 if (P.activa){
   $("#proxEtiqueta").textContent = P.etiqueta || "";
   $("#proxTitulo").textContent = P.titulo || "";
   $("#proxTexto").textContent = P.texto || "";
   $("#proxBtnTxt").textContent = P.boton || "Instagram";
-  $("#proxBtn").href = igUrl;
+  $("#proxBtn").href = P.mensaje ? wa(P.mensaje) : igUrl;
+  if (P.mensaje){ $("#proxBtn").className = "btn btn-wa"; $("#proxBtn use").setAttribute("href", "#i-wa"); }
   $("#proximo").hidden = false;
 } else {
   $$('a[href="#proximo"]').forEach(a => a.remove());
 }
 
 /* ---------- Catálogo ---------- */
-const disponible = p => !p.agotado && !(p.limitada && L.agotado);
+const disponible = p => !p.agotado;
 const silueta = hex => `<svg viewBox="0 0 260 220" aria-hidden="true"><path d="M80 20 L40 40 L10 90 L45 105 L60 82 L60 205 L200 205 L200 82 L215 105 L250 90 L220 40 L180 20 Q130 50 80 20Z" fill="${hexValido(hex)}" stroke="rgba(237,230,214,.22)" stroke-width="2"/></svg>`;
 
 function fotoHTML(p, c){
@@ -164,7 +142,7 @@ function fotoHTML(p, c){
 const radiosTallas = (p, sin, ci = 0) => tallasDe(p, ci).length
   ? tallasDe(p, ci).map((t,i) =>
     `<label><input type="radio" name="t-${esc(p.id)}" value="${esc(t)}" ${i===0?"checked":""} ${sin?"disabled":""}><span>${esc(t)}</span></label>`).join("")
-  : `<span class="talla-unica">Talla única</span>`;
+  : `<span class="talla-unica">Talla única${p.refTalla ? ` (ref. ${esc(p.refTalla)})` : ""}</span>`;
 
 function galeriaHTML(d){
   const alt = esc(nombreItem(d));
@@ -181,10 +159,9 @@ function galeriaHTML(d){
 
 const tarjetaDiseno = d => {
   const sin = !disponible(d), pid = esc(d.id);
-  return `<article class="prod prod-diseno${d.limitada ? " es-limitada" : ""}" id="d-${pid}" data-cats="${esc(catsDe(d).join(" "))}">
+  return `<article class="prod prod-diseno" id="d-${pid}" data-cats="${esc(catsDe(d).join(" "))}">
     ${galeriaHTML(d)}
     <div class="insignias">
-      ${d.limitada ? `<span class="insignia oro">Edición limitada</span>` : ""}
       <span class="insignia">${esc((categorias.find(c => c.id === d.categoria) || {}).nombre || d.tipo || "")}</span>
       ${sin ? `<span class="insignia agot">Agotado</span>` : ""}
     </div>
@@ -205,15 +182,14 @@ const tarjetaDiseno = d => {
   </article>`;
 };
 
-// Orden: primero las básicas, luego las limitadas y después el resto de prendas con foto
-const ordenDisenos = [...disenos.filter(d => d.limitada), ...disenos.filter(d => !d.limitada)];
+// Orden: primero las básicas y después las prendas con foto, en el orden de config.js
+const ordenDisenos = disenos;
 $("#productos").insertAdjacentHTML("afterend", `<p class="vacia cat-vacia" id="catVacia" hidden>Muy pronto: estamos cargando los productos de esta sección. Escríbenos por WhatsApp si buscas algo en especial.</p>`);
 $("#productos").innerHTML = productos.map(p => {
   const sin = !disponible(p), pid = esc(p.id);
-  return `<article class="prod${p.limitada ? " es-limitada" : ""}" id="p-${pid}" data-cats="${esc(catsDe(p).join(" "))}">
+  return `<article class="prod" id="p-${pid}" data-cats="${esc(catsDe(p).join(" "))}">
     <div class="foto" data-foto="${pid}">${fotoHTML(p, p.colores[0])}</div>
     <div class="insignias">
-      ${p.limitada ? `<span class="insignia oro">Edición limitada</span>` : ""}
       <span class="insignia">${+p.gramaje} g</span>
       ${sin ? `<span class="insignia agot">Agotado</span>` : ""}
     </div>
