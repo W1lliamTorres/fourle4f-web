@@ -121,6 +121,8 @@ if (P.activa){
   $("#proxBtnTxt").textContent = P.boton || "Instagram";
   $("#proxBtn").href = P.mensaje ? wa(P.mensaje) : igUrl;
   if (P.mensaje){ $("#proxBtn").className = "btn btn-wa"; $("#proxBtn use").setAttribute("href", "#i-wa"); }
+  // Segundo botón a Instagram: solo si el principal va a WhatsApp y hay cuenta de Instagram
+  if (P.mensaje && ig) $("#proxIg").href = igUrl; else $("#proxIg").remove();
   $("#proximo").hidden = false;
 } else {
   $$('a[href="#proximo"]').forEach(a => a.remove());

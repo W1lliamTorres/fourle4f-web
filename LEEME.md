@@ -37,7 +37,7 @@ Esta guía explica cómo cambiar los datos del sitio sin saber programar.
 | `hero.foto` | Foto grande del inicio. Vacía = se muestra el trébol bordado | `"img/hero.jpg"` |
 | `conoce.fotos` | Las 4 fotos de la sección "Conoce FOURLE4F" (outfit, dobladas, tela, mision). Vacías = ilustración de prenda sobre textura de tela (ver punto 4) | `outfit: { foto:"img/conoce-outfit.jpg", alt:"..." }` |
 | `pagos` | Medios de pago. Salen en "Cómo comprar", en la bolsa y en el pie de página. **No pongas números de cuenta aquí**: esos se envían por WhatsApp | `["Nequi", "Llaves bancarias"]` |
-| `proximo` | Sección "Sugerencias" (botón en el menú de arriba). Con `mensaje` el botón abre WhatsApp con ese texto; con `mensaje: ""` lleva a Instagram. `activa: false` oculta la sección y el botón | — |
+| `proximo` | Sección "Sugerencias" (botón en el menú de arriba). Con `mensaje` el botón abre WhatsApp con ese texto y al lado sale "Síguenos en Instagram"; con `mensaje: ""` queda un solo botón a Instagram. `activa: false` oculta la sección y el botón | — |
 | `categorias` | Subsecciones del menú desplegable "Catálogo" y de los filtros. Salen todas, aunque aún no tengan productos (en ese caso se ve "Muy pronto"). Hoy: Gorras, Camisetas básicas, Camisetas estampadas, Hoodies, Bermudas, Pantalones, Ropa interior, Calcetines y Accesorios. | — |
 | `avisoOriginales` | Frase que sale sobre el catálogo. `""` la quita | — |
 | `avisoFotos` | Franja "¿Quieres ver las prendas sin difuminar?" con botón a WhatsApp. `activo: false` la quita | — |
@@ -63,7 +63,7 @@ La lista empieza vacía. Dentro de `config.js` hay dos líneas de ejemplo (una c
 
 ## 3B. Básicas (`productos`)
 
-Camisetas sin estampado de 270 g, 100% algodón, en Blanco, Negro y Gris, tallas S, M y L. Son una tarjeta del catálogo (filtro "Camisetas básicas") y una pestaña de la guía de tallas:
+Camisetas sin estampado de 270 g, 100% algodón, en Blanco, Negro y Gris, tallas S, M, L y XL. Son una tarjeta del catálogo (filtro "Camisetas básicas") y una pestaña de la guía de tallas:
 
 ```js
 {
@@ -71,7 +71,7 @@ Camisetas sin estampado de 270 g, 100% algodón, en Blanco, Negro y Gris, tallas
   detalle: "Camiseta sin estampado, 100% algodón.",
   precio: 79500,
   agotado: false,
-  medidas: { S:{ancho:53.5, largo:67.5}, M:{ancho:57, largo:69}, L:{ancho:57, largo:72} },
+  medidas: { S:{ancho:53.5, largo:67.5}, M:{ancho:55, largo:69}, L:{ancho:57, largo:72}, XL:{ancho:62.5, largo:76} },
   colores: [
     { nombre:"Blanco", hex:"#EEEAE2", foto:"", fotoEspalda:"" },
     { nombre:"Negro",  hex:"#151515", foto:"", fotoEspalda:"" },
@@ -154,7 +154,6 @@ El sitio en fourle4f.com se actualiza solo desde GitHub: cada vez que se suben c
 |---|---|
 | `js/config.js` → `whatsapp` | Número definitivo (hoy está el temporal 312 218 1447) |
 | `js/config.js` → `redes.tiktok` y `redes.facebook` | Cuando crees las cuentas |
-| `js/config.js` → `productos` → `medidas` | Confirmar con el proveedor que M y L tienen el mismo ancho (57 cm) |
 | `index.html` → `og:url` y `og:image` | Tu dominio |
 | `img/` | Logo final y fotos de producto |
 

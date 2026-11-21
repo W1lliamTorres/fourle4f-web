@@ -470,3 +470,22 @@ nav.menu.abierto .submenu a{padding:10px 0;border:0;font-size:11px}
 .talla-unica{display:block;flex:1;text-align:center;border:1px dashed var(--linea);border-radius:2px;padding:9px 0;color:var(--crudo-2);
   font-family:var(--boton);font-stretch:125%;font-weight:600;font-size:12px;letter-spacing:.1em;text-transform:uppercase}
 .cat-vacia{text-align:center}
+
+/* ===== Calidad (entre el inicio y el catálogo) ===== */
+.calidad{background:var(--monte)}
+.calidad-in{display:grid;gap:40px;align-items:start}
+@media(min-width:960px){.calidad-in{grid-template-columns:1.05fr 1fr;gap:64px}}
+.cal-fotos{display:grid;gap:16px}
+.cal-foto{position:relative;margin:0;aspect-ratio:16/9;border:1px solid var(--oro-linea);border-radius:4px;overflow:hidden;background:var(--carbon)}
+.cal-foto img{display:block;width:100%;height:100%;object-fit:cover;transition:transform .6s ease}
+.cal-foto:hover img{transform:scale(1.04)}
+.cal-foto figcaption{position:absolute;left:12px;bottom:12px;padding:6px 12px;border:1px solid var(--oro-linea);border-radius:2px;background:rgba(8,8,7,.72);
+  font-family:var(--boton);font-stretch:125%;font-weight:600;font-size:11px;letter-spacing:.16em;text-transform:uppercase;color:var(--oro)}
+.prox-texto .acciones{display:flex;flex-wrap:wrap;gap:12px}
+.cal-texto h2{margin:12px 0 18px}
+.cal-intro{color:var(--crudo-2);max-width:56ch;margin:0 0 24px}
+.cal-lista{list-style:none;margin:0 0 24px;padding:0;display:grid;gap:0}
+.cal-lista li{position:relative;padding:12px 0 12px 26px;border-top:1px solid var(--linea);color:var(--crudo-2)}
+.cal-lista li::before{content:"";position:absolute;left:4px;top:21px;width:8px;height:8px;background:var(--oro);transform:rotate(45deg)}
+.cal-lista b{color:var(--crudo);font-weight:600}
+.cal-cierre{font-weight:600;margin:0 0 26px;max-width:50ch}

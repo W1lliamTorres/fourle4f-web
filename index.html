@@ -25,7 +25,7 @@
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Archivo:wdth,wght@62..125,400..800&family=Knewave&family=Unbounded:wght@400..800&display=swap" rel="stylesheet">
 <!-- El "?v=" obliga a los navegadores a bajar la versión nueva. Súbelo (ej. a 3) cada vez que cambies estilos o código. -->
-<link rel="stylesheet" href="css/estilos.css?v=14">
+<link rel="stylesheet" href="css/estilos.css?v=15">
 </head>
 <body>
 
@@ -75,6 +75,32 @@
       </div>
     </div>
     <div class="hero-visual" id="heroVisual"></div>
+  </div>
+</section>
+
+<!-- ================= CALIDAD =================
+     Fotos de detalle en img/calidad/ (16:9, 1280×720). Para cambiar una, reemplaza el archivo con el mismo nombre. -->
+<section class="bloque calidad" id="calidad" aria-labelledby="calTitulo">
+  <div class="wrap calidad-in">
+    <div class="cal-fotos">
+      <figure class="cal-foto"><img src="img/calidad/calidad-cuello.jpg" alt="Detalle del cuello en rib con costura reforzada" width="1280" height="720" loading="lazy"><figcaption>Cuello</figcaption></figure>
+      <figure class="cal-foto"><img src="img/calidad/calidad-estampado.jpg" alt="Detalle de un estampado nítido sobre la tela" width="1280" height="720" loading="lazy"><figcaption>Estampado</figcaption></figure>
+      <figure class="cal-foto"><img src="img/calidad/calidad-manga.jpg" alt="Detalle del dobladillo de la manga con doble costura" width="1280" height="720" loading="lazy"><figcaption>Manga</figcaption></figure>
+    </div>
+    <div class="cal-texto">
+      <p class="etiqueta">La calidad FOURLE4F</p>
+      <h2 id="calTitulo">Calidad que no compite, <span class="brocha">calidad que se siente.</span></h2>
+      <p class="cal-intro">En FOURLE4F creemos que una buena camiseta no debería durarte una temporada. Por eso cuidamos cada detalle: la tela, la costura y el color, para que se vea igual de bien en la primera puesta que en la número cincuenta.</p>
+      <ul class="cal-lista">
+        <li><b>100% algodón.</b> Suave, fresca y transpirable. Ideal para el calor del día.</li>
+        <li><b>Tela de más de 210 g.</b> Tiene más cuerpo que una camiseta común: cae mejor, no transparenta y te abriga un poco más cuando baja la temperatura en la noche.</li>
+        <li><b>Cuello y mangas reforzados.</b> Mantienen su forma lavada tras lavada. Nada de cuellos estirados ni deformes.</li>
+        <li><b>Básicas, sin estampado.</b> Para quienes visten sobrio y quieren una prenda que combine con todo.</li>
+        <li><b>Estampadas.</b> Estampados de alta calidad que no se desvanecen ni se cuartean con los lavados.</li>
+      </ul>
+      <p class="cal-cierre">Elige la tuya, crea tu propio outfit y enamórate de la calidad FOURLE4F.</p>
+      <a class="btn btn-solido" href="#catalogo">Ver el catálogo</a>
+    </div>
   </div>
 </section>
 
@@ -181,7 +207,10 @@
       <p class="etiqueta" id="proxEtiqueta"></p>
       <h2 id="proxTitulo"></h2>
       <p class="prox-desc" id="proxTexto"></p>
-      <a class="btn btn-solido" id="proxBtn" target="_blank" rel="noopener"><svg aria-hidden="true"><use href="#i-ig"/></svg><span id="proxBtnTxt"></span></a>
+      <div class="acciones">
+        <a class="btn btn-solido" id="proxBtn" target="_blank" rel="noopener"><svg aria-hidden="true"><use href="#i-ig"/></svg><span id="proxBtnTxt"></span></a>
+        <a class="btn btn-linea" id="proxIg" target="_blank" rel="noopener"><svg aria-hidden="true"><use href="#i-ig"/></svg><span>Síguenos en Instagram</span></a>
+      </div>
     </div>
   </div>
 </section>
@@ -346,7 +375,7 @@
 </aside>
 <div class="toast" id="toast" role="status"></div>
 
-<script src="js/config.js?v=14"></script>
-<script src="js/app.js?v=14"></script>
+<script src="js/config.js?v=15"></script>
+<script src="js/app.js?v=15"></script>
 </body>
 </html>

@@ -50,7 +50,8 @@ const CONFIG = {
   },
 
   // Sección "Sugerencias" (antes "Próximamente"). activa: false la oculta junto con el botón del menú.
-  //   mensaje: texto que llega por WhatsApp al tocar el botón. Vacío ("") = el botón lleva a Instagram.
+  //   mensaje: texto que llega por WhatsApp al tocar el botón; al lado aparece "Síguenos en Instagram".
+  //            Vacío ("") = un solo botón, que lleva a Instagram.
   proximo: {
     activa: true,
     etiqueta: "Sugerencias",
@@ -229,7 +230,7 @@ const CONFIG = {
       detalle: "Camiseta sin estampado, 100% algodón.",
       precio: 79500,
       agotado: false,
-      medidas: { S:{ancho:53.5, largo:67.5}, M:{ancho:57, largo:69}, L:{ancho:57, largo:72} },  // SUPUESTO: verificar M y L (mismo ancho). Para vender XL agrega  XL:{ancho:__, largo:__}
+      medidas: { S:{ancho:53.5, largo:67.5}, M:{ancho:55, largo:69}, L:{ancho:57, largo:72}, XL:{ancho:62.5, largo:76} },
       colores: [
         { nombre:"Negro",  hex:"#151515", foto:"img/catalogo/basica-negra-frente.jpg",  fotoEspalda:"img/catalogo/basica-negra-espalda.jpg" },
         { nombre:"Blanco", hex:"#EEEAE2", foto:"img/catalogo/basica-blanca-frente.jpg", fotoEspalda:"img/catalogo/basica-blanca-espalda.jpg" },
